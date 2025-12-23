@@ -1,0 +1,172 @@
+/* Основные цвета */
+:root {
+  --bg-primary: #121212;        /* Темный фон страницы */
+  --bg-secondary: #1e1e1e;      /* Фон карточек/контейнеров */
+  --text-primary: #e0e0e0;      /* Основной текст */
+  --text-secondary: #a0a0a0;    /* Вторичный текст */
+  --accent: #bb86fc;            /* Акцентный цвет (Material violet) */
+  --accent-hover: #9a67ea;      /* Акцент при наведении */
+  --border-color: #333333;      /* Цвет границ */
+  --success: #4caf50;           /* Зелёный для успеха */
+  --warning: #ff9800;           /* Жёлтый/оранжевый для предупреждений */
+  --error: #f44336;            /* Красный для ошибок */
+}
+
+/* Сброс стилей и базовая настройка */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Современный шрифт */
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh; /* Тело занимает минимум высоту экрана */
+  display: flex; /* Используем flex для центровки контента */
+  justify-content: center;
+  align-items: flex-start; /* Но прижимаем контент к верху */
+  padding: 20px; /* Отступы от краёв экрана */
+}
+
+/* Контейнер страницы */
+.container {
+  width: 100%;
+  max-width: 800px; /* Максимальная ширина */
+  margin-top: 40px; /* Отступ сверху после body padding */
+  background: var(--bg-secondary);
+  padding: 30px;
+  border-radius: 12px; /* Более закругленные углы */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Тень для глубины */
+  border: 1px solid var(--border-color); /* Легкая граница */
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 25px; /* Отступ снизу для заголовка */
+  color: var(--accent); /* Акцентный цвет для заголовков */
+  font-weight: 600; /* Чуть жирнее */
+  font-size: 1.8rem; /* Размер шрифта */
+}
+
+/* Поля ввода */
+input {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  background: #2d2d2d; /* Темный фон поля */
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px; /* Закругления */
+  outline: none; /* Убираем стандартный outline */
+  transition: border-color 0.3s ease; /* Плавный переход при фокусе */
+}
+
+input:focus {
+  border-color: var(--accent); /* Цвет границы при фокусе */
+}
+
+/* Кнопки */
+button {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  background: var(--accent); /* Акцентный цвет фона */
+  color: #000000; /* Черный текст на светлом акценте */
+  border: none;
+  border-radius: 8px; /* Закругления */
+  cursor: pointer;
+  font-weight: 600; /* Жирный шрифт */
+  margin-top: 10px; /* Отступ сверху */
+  transition: background 0.3s ease, transform 0.1s ease; /* Эффекты */
+}
+
+button:hover {
+  background: var(--accent-hover); /* Более темный акцент при наведении */
+  transform: translateY(-2px); /* Легкий подъем при наведении */
+}
+
+button:active {
+  transform: translateY(0); /* Возвращаем на место при клике */
+}
+
+/* Ссылки */
+a {
+  display: inline-block; /* Не на всю ширину */
+  margin-top: 15px;
+  text-align: center;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease; /* Плавный переход цвета */
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* Списки результатов */
+ul#results {
+  margin-top: 20px;
+  padding-left: 20px;
+  list-style-type: disc; /* Простые точки */
+}
+
+ul#results li {
+  margin-bottom: 10px;
+  padding: 8px 0; /* Отступы внутри элемента списка */
+  border-bottom: 1px solid var(--border-color); /* Легкая разделительная линия */
+}
+
+/* Список шагов в статье */
+ol#steps {
+  margin-top: 20px;
+  padding-left: 25px; /* Отступ для номеров */
+}
+
+ol#steps li {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #252525; /* Фон для каждого шага */
+  border-radius: 6px;
+  border-left: 4px solid var(--accent); /* Акцентная полоска слева */
+}
+
+/* Дополнительно: стили для каталога */
+#catalog {
+  margin-top: 20px;
+}
+
+#catalog a {
+  display: block; /* На всю ширину */
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  background: #252525;
+  border-radius: 8px;
+  border-left: 3px solid var(--accent);
+  transition: background 0.2s ease;
+}
+
+#catalog a:hover {
+  background: #2d2d2d;
+  text-decoration: none;
+}
+
+/* Для маленьких экранов (мобильные устройства) */
+@media (max-width: 600px) {
+  .container {
+      padding: 20px;
+      margin-top: 20px;
+  }
+
+  h1 {
+      font-size: 1.5rem;
+  }
+
+  input, button {
+      padding: 12px;
+  }
+}
