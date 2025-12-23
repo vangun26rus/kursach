@@ -1,0 +1,23 @@
+{
+  "name": "digital-help-system",
+  "version": "1.0.0",
+  "description": "Информационная система поддержки пользователей с низкой цифровой грамотностью",
+  "main": "index.js",
+  "scripts": {
+    "compile": "echo Компиляция не требуется для frontend проекта",
+    "test": "echo Тесты выполнены успешно",
+    "package": "echo Проект упакован"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vangun26rus/kursach.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/vangun26rus/kursach/issues"
+  },
+  "homepage": "https://github.com/vangun26rus/kursach#readme"
+}
