@@ -155,7 +155,6 @@ ol#steps li {
   text-decoration: none;
 }
 
-/* Для маленьких экранов (мобильные устройства) */
 @media (max-width: 600px) {
   .container {
       padding: 20px;
@@ -169,4 +168,11 @@ ol#steps li {
   input, button {
       padding: 12px;
   }
+}
+
+ol#steps li img {
+  display: block;
+  margin-top: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
