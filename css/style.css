@@ -125,7 +125,7 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 16px;
+  padding: 12px 18px;
   background: linear-gradient(180deg, #fff5e6 0%, #ffe8cc 100%);
   border: 2px solid #ffc97a;
   border-radius: 12px;
@@ -134,6 +134,7 @@ a:hover {
   text-decoration: none;
   transition: all 0.2s ease;
   box-shadow: 0 3px 10px rgba(230, 140, 0, 0.15);
+  height: 48px;
 }
 
 .help-btn:hover {
@@ -148,10 +149,15 @@ a:hover {
   height: 22px;
 }
 
+.top-actions button {
+  height: 48px;
+  padding: 0 20px;
+}
+
 /* Main search block - unified container */
 .main-search-block {
   display: grid;
-  grid-template-columns: minmax(0, 1.8fr) minmax(280px, 1fr);
+  grid-template-columns: minmax(280px, 1fr) minmax(0, 1.8fr);
   gap: 22px;
   align-items: stretch;
   margin-top: 24px;
@@ -162,17 +168,17 @@ a:hover {
   box-shadow: 0 8px 24px rgba(28, 46, 78, 0.08);
 }
 
-.search-section {
+.guide-section {
   padding-right: 22px;
   border-right: 2px dashed #d5dde6;
-}
-
-.guide-section {
-  padding-left: 22px;
   background: #ffffff;
   border-radius: 14px;
   padding: 20px;
   border: 2px solid #e0e8f0;
+}
+
+.search-section {
+  padding-left: 22px;
 }
 
 .section-icon {
@@ -211,19 +217,20 @@ a:hover {
 /* Larger, more visible search form for elderly users */
 .search-form {
   display: grid;
-  grid-template-columns: 1.8fr 1fr;
+  grid-template-columns: 1fr auto;
   gap: 14px;
   align-items: center;
 }
 
 .search-form input {
-  padding: 16px 18px;
-  font-size: 1.15rem;
+  padding: 20px 18px;
+  font-size: 1.2rem;
   border-width: 3px;
   border-color: #8fb0d6;
   border-radius: 12px;
   background: #fff;
   transition: all 0.2s ease;
+  height: 64px;
 }
 
 .search-form input:focus {
@@ -232,8 +239,8 @@ a:hover {
 }
 
 .search-form button {
-  padding: 16px 20px;
-  font-size: 1.15rem;
+  padding: 20px 24px;
+  font-size: 1.2rem;
   font-weight: 800;
   border-width: 3px;
   border-radius: 12px;
@@ -245,6 +252,8 @@ a:hover {
   border-color: #004a99;
   box-shadow: 0 4px 14px rgba(0, 86, 179, 0.3);
   transition: all 0.2s ease;
+  height: 64px;
+  width: 72px;
 }
 
 .search-form button:hover {
@@ -255,8 +264,8 @@ a:hover {
 }
 
 .btn-icon {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
 }
 
 /* Guide section styling */
@@ -440,6 +449,7 @@ button:disabled {
 .modal-close,
 .tab-btn {
   width: auto;
+  height: 48px;
 }
 
 .secondary {
