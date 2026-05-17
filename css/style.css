@@ -632,7 +632,7 @@ label {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin: 8px 0 4px 0;
+  margin: 4px 0 2px 0;
 }
 
 .rating-stars-large button {
@@ -830,11 +830,12 @@ li {
 }
 
 .meta .article-meta-item {
-  display: inline-flex;
+  display: inline-block;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
   margin-bottom: 8px;
+  margin-right: 16px;
 }
 
 .meta .star-icon {
