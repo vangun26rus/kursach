@@ -35,14 +35,14 @@ async function initCatalog() {
         card.innerHTML = `
           <h3><a href="article.html?id=${article.id}">${escapeHtml(article.title)}</a></h3>
           <p>${escapeHtml(article.summary)}</p>
-          <p class="muted" style="margin-top:12px;">
-            <span style="display:inline-flex;align-items:center;gap:6px;margin-right:16px;">
+          <p class="muted" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;">
+            <span style="display:inline-flex;align-items:center;gap:6px;">
               <svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;color:#5a7d9a;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
               ${escapeHtml(article.authorName)}
             </span>
-            <span class="rating-stars">
+            <span class="rating-stars" style="display:inline-flex;align-items:center;gap:3px;">
               ${ratingStars}
-              <span style="color:var(--muted);font-weight:500;font-size:0.95rem;">(${article.ratingsCount})</span>
+              <span style="color:var(--muted);font-weight:500;font-size:0.9rem;">(${article.ratingsCount})</span>
             </span>
           </p>
         `;
