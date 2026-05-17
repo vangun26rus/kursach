@@ -112,7 +112,30 @@ a:hover {
 }
 
 .search-panel {
+  margin-top: 0;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) minmax(280px, 1fr);
+  gap: 22px;
+  align-items: start;
   margin-top: 24px;
+}
+
+.guide-panel {
+  background: #f8fafc;
+  border-color: #d5dde6;
+  color: #394d67;
+  opacity: 0.96;
+}
+
+.guide-panel h2 {
+  font-size: clamp(1.15rem, 1.4vw, 1.45rem);
+}
+
+.guide-panel .guide-list {
+  padding-left: 20px;
 }
 
 .search-form {
