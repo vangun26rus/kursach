@@ -310,6 +310,7 @@ a:hover {
 .guide-list span:last-child {
   padding-top: 4px;
   line-height: 1.5;
+  font-size: 1.15rem;
 }
 
 /* Catalog card enhancement */
@@ -504,6 +505,13 @@ label {
   margin-left: auto;
 }
 
+/* Кнопки Войти/Регистрация в навигации */
+.nav-right .secondary,
+.nav-right button:not(.help-btn) {
+  height: 48px;
+  padding: 0 16px;
+}
+
 /* Catalog styles */
 .catalog-section {
   margin-bottom: 36px;
@@ -599,6 +607,21 @@ label {
   color: #f5a623;
 }
 
+/* Rating and Comments combined section */
+.rating-comments-section {
+  margin-bottom: 30px;
+  padding: 24px 20px;
+  background: linear-gradient(135deg, #f0f5fa 0%, #e8f0f8 100%);
+  border-color: #b8cfe6;
+}
+
+.comments-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #c5d8ea, transparent);
+  margin: 24px 0;
+  border: none;
+}
+
 /* Rating section improvements */
 .rating-section {
   margin-bottom: 30px;
@@ -656,6 +679,8 @@ label {
   padding: 24px 20px;
 }
 
+/* Скрываем старый класс comments-section если он используется */
+
 .comments-auth-actions {
   margin: 24px 0;
   display: flex;
@@ -668,6 +693,13 @@ label {
   margin-top: 24px;
   padding-top: 24px;
   border-top: 2px dashed #c5d8ea;
+}
+
+/* Убираем лишний border-top у wrapper внутри объединенного блока, т.к. есть divider */
+.rating-comments-section .comments-form-wrapper {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
 }
 
 .comments-list {
@@ -791,13 +823,10 @@ li {
 }
 
 .meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
+  display: block;
   margin-bottom: 16px;
   color: var(--muted);
   font-size: 1.1rem;
-  align-items: center;
 }
 
 .meta .article-meta-item {
@@ -805,6 +834,7 @@ li {
   align-items: center;
   gap: 8px;
   white-space: nowrap;
+  margin-bottom: 8px;
 }
 
 .meta .star-icon {
