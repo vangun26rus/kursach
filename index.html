@@ -39,28 +39,6 @@
     </header>
 
     <section class="main-search-block">
-      <div class="search-section">
-        <div class="section-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-        </div>
-        <h2>Найти инструкцию</h2>
-        <p class="search-description">Введите вашу проблему обычными словами, например: <em>"не могу войти в почту"</em> или <em>"как подключить принтер"</em>.</p>
-        <div class="search-form">
-          <input id="searchInput" placeholder="Опишите проблему подробно..." aria-label="Поиск инструкции">
-          <button id="searchBtn" type="button">
-            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            Найти инструкцию
-          </button>
-        </div>
-        <ul id="results"></ul>
-      </div>
-
       <aside class="guide-section">
         <div class="section-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -72,7 +50,7 @@
         <ol class="guide-list">
           <li>
             <span class="step-number">1</span>
-            <span>Введите ваш вопрос в поле поиска выше</span>
+            <span>Введите ваш вопрос в поле поиска справа</span>
           </li>
           <li>
             <span class="step-number">2</span>
@@ -84,6 +62,27 @@
           </li>
         </ol>
       </aside>
+
+      <div class="search-section">
+        <div class="section-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <h2>Найти инструкцию</h2>
+        <p class="search-description">Введите вашу проблему обычными словами, например: <em>"не могу войти в почту"</em> или <em>"как подключить принтер"</em>.</p>
+        <div class="search-form">
+          <input id="searchInput" placeholder="Опишите проблему подробно..." aria-label="Поиск инструкции">
+          <button id="searchBtn" type="button" aria-label="Найти инструкцию">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+        <ul id="results"></ul>
+      </div>
     </section>
 
     <section class="quick-grid">
