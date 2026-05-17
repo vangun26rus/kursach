@@ -37,6 +37,9 @@ async function initArticlePage() {
   document.getElementById("articleLoginBtn").addEventListener("click", () => onManualAuth("login"));
   document.getElementById("articleRegisterBtn").addEventListener("click", () => onManualAuth("register"));
   window.addEventListener("auth:changed", onAuthChanged);
+  
+  // Инициализация интерактивности звезд рейтинга
+  initRatingInteraction();
 }
 
 async function loadArticle() {
@@ -44,8 +47,8 @@ async function loadArticle() {
     const article = await apiRequest(`/api/articles/${encodeURIComponent(articleId)}`);
     document.getElementById("title").textContent = article.title;
     
-    const authorIcon = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
-    const starIcon = '<svg class="star-icon" viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+    const authorIcon = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:24px;height:24px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+    const bookIcon = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:24px;height:24px;"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>';
     
     const authorRatingStars = renderRatingStars(Number(article.authorAverageRating));
     const articleRatingStars = renderRatingStars(article.averageRating);
@@ -53,11 +56,11 @@ async function loadArticle() {
     document.getElementById("meta").innerHTML = `
       <span class="article-meta-item">
         ${authorIcon}
-        <strong>Автор:</strong> ${escapeHtml(article.authorName)} <span style="display:inline-flex;align-items:center;gap:2px;margin-left:4px;">${authorRatingStars}</span>
+        <strong>Автор:</strong> ${escapeHtml(article.authorName)} <span style="display:inline-flex;align-items:center;gap:2px;margin-left:6px;">${authorRatingStars}</span>
       </span>
       <span class="article-meta-item">
-        ${starIcon}
-        <strong>Рейтинг статьи:</strong> <span style="display:inline-flex;align-items:center;gap:2px;margin-left:4px;">${articleRatingStars}</span> <span style="color:var(--muted);font-weight:500;font-size:0.95rem;">(${article.ratingsCount})</span>
+        ${bookIcon}
+        <strong>Рейтинг статьи:</strong> <span style="display:inline-flex;align-items:center;gap:2px;margin-left:6px;">${articleRatingStars}</span> <span style="color:var(--muted);font-weight:500;font-size:0.95rem;">(${article.ratingsCount})</span>
       </span>
     `;
     document.getElementById("content").innerHTML = article.contentHtml;
@@ -141,6 +144,17 @@ async function onRateArticle(event) {
   if (!(await ensureFeedbackAuth())) return;
 
   const score = Number(button.dataset.rate);
+  
+  // Визуально отмечаем выбранную звезду и все предыдущие
+  const allStars = document.querySelectorAll("#rateButtons button");
+  allStars.forEach((star, index) => {
+    if (index < score) {
+      star.classList.add("active");
+    } else {
+      star.classList.remove("active");
+    }
+  });
+  
   try {
     await apiRequest(`/api/articles/${articleId}/rating`, {
       method: "POST",
@@ -152,6 +166,32 @@ async function onRateArticle(event) {
     notify("ratingStatus", error.message, true);
   }
 }
+
+// Добавляем интерактивность при наведении на звезды
+document.addEventListener("DOMContentLoaded", function() {
+  const ratingContainer = document.getElementById("rateButtons");
+  if (!ratingContainer) return;
+  
+  const stars = ratingContainer.querySelectorAll("button");
+  
+  stars.forEach((star, index) => {
+    star.addEventListener("mouseenter", function() {
+      // При наведении подсвечиваем все звезды до текущей
+      stars.forEach((s, i) => {
+        if (i <= index) {
+          s.classList.add("active");
+        } else {
+          s.classList.remove("active");
+        }
+      });
+    });
+    
+    star.addEventListener("mouseleave", function() {
+      // Убираем подсветку при уходе мыши (активные только если уже оценено)
+      stars.forEach(s => s.classList.remove("active"));
+    });
+  });
+});
 
 async function onAddComment(event) {
   event.preventDefault();
@@ -190,6 +230,52 @@ async function loadSimilar() {
   } catch (error) {
     list.innerHTML = `<li>Не удалось загрузить похожие статьи: ${escapeHtml(error.message)}</li>`;
   }
+}
+
+// Добавляем интерактивность при наведении на звезды рейтинга
+function initRatingInteraction() {
+  const ratingContainer = document.getElementById("rateButtons");
+  if (!ratingContainer) return;
+  
+  const stars = ratingContainer.querySelectorAll("button");
+  let currentRating = 0; // Храним текущий выбранный рейтинг
+  
+  stars.forEach((star, index) => {
+    star.addEventListener("mouseenter", function() {
+      // При наведении подсвечиваем все звезды до текущей
+      stars.forEach((s, i) => {
+        if (i <= index) {
+          s.classList.add("hover-active");
+        } else {
+          s.classList.remove("hover-active");
+        }
+      });
+    });
+    
+    star.addEventListener("mouseleave", function() {
+      // Убираем hover-подсветку, но оставляем выбранную оценку
+      stars.forEach((s, i) => {
+        if (i < currentRating) {
+          s.classList.add("active");
+        } else {
+          s.classList.remove("hover-active");
+        }
+      });
+    });
+    
+    star.addEventListener("click", function() {
+      currentRating = index + 1;
+    });
+  });
+  
+  // Сброс hover при клике вне звезд
+  ratingContainer.addEventListener("mouseleave", function() {
+    stars.forEach((s, i) => {
+      if (i >= currentRating) {
+        s.classList.remove("hover-active");
+      }
+    });
+  });
 }
 
 initArticlePage();
