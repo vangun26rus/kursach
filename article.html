@@ -10,11 +10,11 @@
   <main class="container">
     <nav class="links top-nav">
       <div class="nav-left">
-        <a href="index.html">
+        <a href="index.html" class="nav-btn">
           <svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;margin-right:6px;"><path d="M12 3L4 9v12h5v-7h6v7h5V9z"/></svg>
           Главная
         </a>
-        <a href="catalog.html">
+        <a href="catalog.html" class="nav-btn">
           <svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;margin-right:6px;"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
           Каталог
         </a>
@@ -22,7 +22,7 @@
       <div class="nav-right">
         <a href="support.html" class="help-btn">
           <svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
-          Сообщить об ошибке
+          Нужна помощь?
         </a>
       </div>
     </nav>
@@ -31,17 +31,16 @@
     <div id="meta" class="meta"></div>
     <p class="muted">Категории: <span id="categories"></span></p>
 
-    <article id="content" class="panel"></article>
+    <article id="content" class="panel article-content"></article>
 
     <section class="panel rating-section">
       <h2>Оцените статью</h2>
-      <p class="muted">Пять звёзд: от “непонятно” до “очень понятно”.</p>
       <div id="rateButtons" class="rating-stars-large">
-        <button type="button" data-rate="1">1</button>
-        <button type="button" data-rate="2">2</button>
-        <button type="button" data-rate="3">3</button>
-        <button type="button" data-rate="4">4</button>
-        <button type="button" data-rate="5">5</button>
+        <button type="button" data-rate="1" title="1 звезда - непонятно">★</button>
+        <button type="button" data-rate="2" title="2 звезды">★★</button>
+        <button type="button" data-rate="3" title="3 звезды - нормально">★★★</button>
+        <button type="button" data-rate="4" title="4 звезды">★★★★</button>
+        <button type="button" data-rate="5" title="5 звезд - очень понятно">★★★★★</button>
       </div>
       <p id="ratingStatus" class="status" role="status"></p>
     </section>
@@ -62,7 +61,7 @@
       <ul id="commentsList" class="comments-list"></ul>
     </section>
 
-    <section class="panel">
+    <section class="panel help-section">
       <h2>Не помогло?</h2>
       <p class="muted">Попробуйте похожие статьи.</p>
       <ul id="similarList"></ul>
