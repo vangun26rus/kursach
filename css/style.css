@@ -96,6 +96,7 @@ a:hover {
   border: 2px solid #c5d8ea;
   border-radius: 14px;
   transition: all 0.2s ease;
+  margin-bottom: 10px;
 }
 
 .user-panel {
@@ -617,7 +618,7 @@ label {
 }
 
 .article-content {
-  margin-bottom: 28px;
+  margin-bottom: 10px;
   padding-bottom: 20px;
 }
 
@@ -651,7 +652,7 @@ label {
 
 /* Rating and Comments combined section */
 .rating-comments-section {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   padding: 24px 20px;
   background: linear-gradient(135deg, #f0f5fa 0%, #e8f0f8 100%);
   border-color: #b8cfe6;
@@ -831,7 +832,7 @@ label {
   align-items: center;
   min-height: 44px;
   padding: 10px 16px;
-  border-radius: 999px;
+  border-radius: 12px;
   border: 1px solid #8fb0d6;
   background: linear-gradient(180deg, #ffffff 0%, #e9f2ff 100%);
   color: #123762;
