@@ -673,6 +673,11 @@ label {
   min-height: 1.5em;
 }
 
+/* Скрываем рейтинг-статус когда он пуст */
+.rating-status:empty {
+  display: none;
+}
+
 /* Comments section improvements */
 .comments-section {
   background: linear-gradient(135deg, #f0f5fa 0%, #e8f0f8 100%);
