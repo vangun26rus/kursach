@@ -126,22 +126,23 @@ a:hover {
   align-items: center;
   gap: 8px;
   padding: 12px 18px;
-  background: linear-gradient(180deg, #fff5e6 0%, #ffe8cc 100%);
-  border: 2px solid #ffc97a;
+  background: linear-gradient(135deg, #ff9f43 0%, #ff8c00 100%);
+  border: 2px solid #ff8c00;
   border-radius: 12px;
-  color: #8a4b00;
+  color: white;
   font-weight: 700;
   text-decoration: none;
   transition: all 0.2s ease;
-  box-shadow: 0 3px 10px rgba(230, 140, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(255, 140, 0, 0.25);
   height: 48px;
 }
 
 .help-btn:hover {
-  background: linear-gradient(180deg, #ffe8cc 0%, #ffd9a3 100%);
-  border-color: #ffb347;
+  background: linear-gradient(135deg, #ffb166 0%, #ff9f43 100%);
+  border-color: #ff8c00;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(230, 140, 0, 0.25);
+  box-shadow: 0 6px 16px rgba(255, 140, 0, 0.35);
+  color: white;
 }
 
 .help-btn .icon {
@@ -601,22 +602,22 @@ label {
 
 /* Rating section improvements */
 .rating-section {
-  background: linear-gradient(135deg, #f0f7ff 0%, #e6f2ff 100%);
-  border-color: #b8d4f0;
-  margin-bottom: 24px;
-  padding: 18px 20px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-color: #90caf9;
+  margin-bottom: 30px;
+  padding: 20px 24px;
 }
 
 .rating-stars-large {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin: 12px 0;
+  gap: 12px;
+  margin: 8px 0 4px 0;
 }
 
 .rating-stars-large button {
-  width: 48px;
-  height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: transparent;
   border: none;
@@ -630,51 +631,58 @@ label {
 }
 
 .rating-stars-large button .star-icon {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   fill: currentColor;
 }
 
 .rating-stars-large button:hover,
-.rating-stars-large button:hover ~ button,
-.rating-stars-large button:hover + button {
-  color: #f5a623;
-  transform: scale(1.1);
+.rating-stars-large button.active,
+.rating-stars-large button.hover-active {
+  color: #ffc107;
+  transform: scale(1.15);
 }
 
-.rating-stars-large button:hover {
-  color: #f5a623;
+.rating-status {
+  text-align: center;
+  color: var(--muted);
+  font-size: 1.1rem;
+  margin-top: 8px;
+  min-height: 1.5em;
 }
 
 /* Comments section improvements */
 .comments-section {
   background: linear-gradient(135deg, #f0f5fa 0%, #e8f0f8 100%);
   border-color: #b8cfe6;
-  margin-bottom: 28px;
-  padding: 22px 20px;
-}
-
-/* Help section (Не помогло) */
-.help-section {
-  background: linear-gradient(135deg, #fff9f0 0%, #fff5e6 100%);
-  border-color: #ffd9a3;
-  margin-bottom: 28px;
-  padding: 22px 20px;
+  margin-bottom: 30px;
+  padding: 24px 20px;
 }
 
 .comments-auth-actions {
-  margin-bottom: 24px;
-  margin-top: 8px;
+  margin: 24px 0;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .comments-form-wrapper {
-  margin-top: 20px;
+  margin-top: 24px;
   padding-top: 24px;
   border-top: 2px dashed #c5d8ea;
 }
 
 .comments-list {
   margin-top: 24px;
+}
+
+/* Help section (Не помогло) - blue like other blocks */
+.help-section {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-color: #90caf9;
+  margin-bottom: 30px;
+  padding: 24px 20px;
 }
 
 .comments-list li {
