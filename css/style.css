@@ -127,8 +127,8 @@ a:hover {
   align-items: center;
   gap: 8px;
   padding: 12px 18px;
-  background: linear-gradient(135deg, #ff9f43 0%, #ff8c00 100%);
-  border: 2px solid #ff8c00;
+  background: linear-gradient(135deg, #ffb166 0%, #ff9f43 100%);
+  border: 2px solid #ff9f43;
   border-radius: 12px;
   color: white;
   font-weight: 700;
@@ -139,8 +139,8 @@ a:hover {
 }
 
 .help-btn:hover {
-  background: linear-gradient(135deg, #ffb166 0%, #ff9f43 100%);
-  border-color: #ff8c00;
+  background: linear-gradient(135deg, #ffc48a 0%, #ffb166 100%);
+  border-color: #ff9f43;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(255, 140, 0, 0.35);
   color: white;
@@ -507,6 +507,16 @@ label {
   margin-left: auto;
 }
 
+/* Кнопки в верхней части - единый стиль для всех страниц */
+.top-actions button,
+.nav-right .secondary,
+.nav-right button:not(.help-btn) {
+  height: 48px;
+  padding: 0 20px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
 /* Кнопки Войти/Регистрация в навигации */
 .nav-right .secondary,
 .nav-right button:not(.help-btn) {
@@ -675,6 +685,11 @@ label {
 
 /* Скрываем рейтинг-статус когда он пуст */
 .rating-status:empty {
+  display: none;
+}
+
+/* Скрываем статус когда он пуст */
+.status:empty {
   display: none;
 }
 
