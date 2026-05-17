@@ -86,7 +86,6 @@ a:hover {
 }
 
 .panel {
-  margin-top: 18px;
   padding: 20px;
   background: var(--panel);
   border: 1px solid var(--border);
