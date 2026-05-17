@@ -1,6 +1,24 @@
 let articleId = null;
 let currentUser = null;
 
+function renderRatingStars(rating) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
+  let stars = '';
+  
+  for (let i = 0; i < 5; i++) {
+    if (i < fullStars) {
+      stars += '<svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+    } else if (i === fullStars && hasHalfStar) {
+      stars += '<svg class="star-icon" viewBox="0 0 24 24" style="opacity:0.5;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+    } else {
+      stars += '<svg class="star-icon" viewBox="0 0 24 24" style="opacity:0.2;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+    }
+  }
+  
+  return stars;
+}
+
 async function initArticlePage() {
   ensureAuthModal();
   const params = new URLSearchParams(window.location.search);
@@ -25,10 +43,24 @@ async function loadArticle() {
   try {
     const article = await apiRequest(`/api/articles/${encodeURIComponent(articleId)}`);
     document.getElementById("title").textContent = article.title;
+    
+    const authorIcon = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+    const starIcon = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+    
     document.getElementById("meta").innerHTML = `
-      <span>Автор: ${escapeHtml(article.authorName)}</span>
-      <span>Рейтинг статьи: ${article.averageRating.toFixed(2)} (${article.ratingsCount})</span>
-      <span>Рейтинг автора: ${Number(article.authorAverageRating).toFixed(2)}</span>
+      <span class="article-meta-item">
+        ${authorIcon}
+        Автор: ${escapeHtml(article.authorName)}
+      </span>
+      <span class="article-meta-item">
+        ${starIcon}
+        Рейтинг статьи: ${renderRatingStars(article.averageRating)}
+        <span style="color:var(--muted);font-weight:500;font-size:0.95rem;">(${article.ratingsCount})</span>
+      </span>
+      <span class="article-meta-item">
+        ${starIcon}
+        Рейтинг автора: ${Number(article.authorAverageRating).toFixed(2)}
+      </span>
     `;
     document.getElementById("content").innerHTML = article.contentHtml;
     document.getElementById("categories").textContent = article.categories.join(", ");
@@ -52,7 +84,12 @@ function renderComments(comments) {
   for (const comment of comments) {
     const li = document.createElement("li");
     li.innerHTML = `
-      <strong>${escapeHtml(comment.authorName)}</strong>
+      <div class="comment-author">
+        <span class="user-icon">
+          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </span>
+        <strong>${escapeHtml(comment.authorName)}</strong>
+      </div>
       <p>${escapeHtml(comment.text)}</p>
     `;
     list.appendChild(li);
