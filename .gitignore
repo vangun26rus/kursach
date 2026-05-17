@@ -1,4 +1,4 @@
-```
+```gitignore
 # Compiled and build artifacts
 *.pyc
 __pycache__/
@@ -9,40 +9,28 @@ build/
 target/
 
 # Dependencies
-.venv/
-venv/
 node_modules/
-.julia/
-zig-cache/
-.deps/
+venv/
+.venv/
+.env
+.env.local
+.env.*
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
-*.swo
-
-# Environment
-.env
-.env.local
-*.env.*
 
 # Editors
 .vscode/
 .idea/
-*.swp
-*.swo
-
-# System files
-.DS_Store
-Thumbs.db
 
 # Coverage
 coverage/
 htmlcov/
 .coverage
 
-# Compression
+# Compressed files
 *.zip
 *.gz
 *.tar
@@ -61,4 +49,8 @@ htmlcov/
 *.Z
 *.lz
 *.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 ```

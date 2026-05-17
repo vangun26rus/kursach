@@ -34,19 +34,29 @@
     <article id="content" class="panel article-content"></article>
 
     <section class="panel rating-section">
-      <h2>Оцените статью</h2>
+      <h2 style="text-align: center;">Оцените статью</h2>
       <div id="rateButtons" class="rating-stars-large">
-        <button type="button" data-rate="1" title="1 звезда - непонятно">★</button>
-        <button type="button" data-rate="2" title="2 звезды">★★</button>
-        <button type="button" data-rate="3" title="3 звезды - нормально">★★★</button>
-        <button type="button" data-rate="4" title="4 звезды">★★★★</button>
-        <button type="button" data-rate="5" title="5 звезд - очень понятно">★★★★★</button>
+        <button type="button" data-rate="1" title="1 звезда - непонятно" aria-label="1 звезда">
+          <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </button>
+        <button type="button" data-rate="2" title="2 звезды" aria-label="2 звезды">
+          <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </button>
+        <button type="button" data-rate="3" title="3 звезды - нормально" aria-label="3 звезды">
+          <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </button>
+        <button type="button" data-rate="4" title="4 звезды" aria-label="4 звезды">
+          <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </button>
+        <button type="button" data-rate="5" title="5 звезд - очень понятно" aria-label="5 звезд">
+          <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </button>
       </div>
       <p id="ratingStatus" class="status" role="status"></p>
     </section>
 
     <section class="panel comments-section">
-      <h2>Комментарии</h2>
+      <h2 style="text-align: center;">Комментарии</h2>
       <p id="authRequiredNote" class="muted">Чтобы оставить оценку и комментарий, потребуется вход. Окно откроется автоматически при действии.</p>
       <div id="feedbackAuthActions" class="stack-inline comments-auth-actions">
         <button id="articleLoginBtn" type="button" class="secondary">Войти</button>
@@ -62,7 +72,7 @@
     </section>
 
     <section class="panel help-section">
-      <h2>Не помогло?</h2>
+      <h2 style="text-align: center;">Не помогло?</h2>
       <p class="muted">Попробуйте похожие статьи.</p>
       <ul id="similarList"></ul>
     </section>

@@ -44,20 +44,20 @@ async function loadArticle() {
     const article = await apiRequest(`/api/articles/${encodeURIComponent(articleId)}`);
     document.getElementById("title").textContent = article.title;
     
-    const authorIcon = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
-    const starIcon = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:20px;height:20px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+    const authorIcon = '<svg class="icon" viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>';
+    const starIcon = '<svg class="star-icon" viewBox="0 0 24 24" fill="currentColor" style="width:22px;height:22px;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
     
     const authorRatingStars = renderRatingStars(Number(article.authorAverageRating));
+    const articleRatingStars = renderRatingStars(article.averageRating);
     
     document.getElementById("meta").innerHTML = `
       <span class="article-meta-item">
         ${authorIcon}
-        Автор: ${escapeHtml(article.authorName)} ${authorRatingStars}
+        <strong>Автор:</strong> ${escapeHtml(article.authorName)} <span style="display:inline-flex;align-items:center;gap:2px;margin-left:4px;">${authorRatingStars}</span>
       </span>
       <span class="article-meta-item">
         ${starIcon}
-        Рейтинг статьи: ${renderRatingStars(article.averageRating)}
-        <span style="color:var(--muted);font-weight:500;font-size:0.95rem;">(${article.ratingsCount})</span>
+        <strong>Рейтинг статьи:</strong> <span style="display:inline-flex;align-items:center;gap:2px;margin-left:4px;">${articleRatingStars}</span> <span style="color:var(--muted);font-weight:500;font-size:0.95rem;">(${article.ratingsCount})</span>
       </span>
     `;
     document.getElementById("content").innerHTML = article.contentHtml;
