@@ -221,6 +221,20 @@ async function onAddComment(event) {
   }
 }
 
+// Добавляем обработчик для кнопки отправки комментария - вызываем аутентификацию
+document.addEventListener("DOMContentLoaded", function() {
+  const commentSubmitBtn = document.getElementById("commentSubmit");
+  if (commentSubmitBtn) {
+    commentSubmitBtn.addEventListener("click", function(e) {
+      const text = document.getElementById("commentText").value.trim();
+      if (!text) {
+        e.preventDefault();
+        ensureFeedbackAuth();
+      }
+    });
+  }
+});
+
 async function loadSimilar() {
   const list = document.getElementById("similarList");
   try {
