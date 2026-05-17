@@ -55,6 +55,7 @@ h2 {
 }
 
 h1 {
+  margin: 0 0 12px;
   font-size: clamp(1.8rem, 2.8vw, 2.4rem);
   color: #0b2b59;
   font-weight: 700;
@@ -320,12 +321,13 @@ a:hover {
 }
 
 .catalog-card::before {
+  display: none;
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
+  height: 1px;
   background: linear-gradient(90deg, #0066cc, #00a896, #0066cc);
 }
 
@@ -527,7 +529,7 @@ label {
 
 .catalog-card {
   margin-bottom: 20px;
-  padding: 16px 18px;
+  padding: 5px 5px;
   border-bottom: 1px dashed #d5e0eb;
 }
 
@@ -683,7 +685,7 @@ label {
 
 .comments-auth-actions {
   margin: 24px 0;
-  display: flex;
+  display: none;
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
