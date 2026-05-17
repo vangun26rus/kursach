@@ -2,22 +2,67 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Помощь пользователям</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Help System</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <main class="container">
+    <header class="topbar">
+      <div>
+        <h1>Цифровая помощь</h1>
+        <p id="greeting" class="lead">Найдите нужную инструкцию за пару шагов.</p>
+      </div>
 
-<div class="container">
-  <h1>Чем мы можем помочь?</h1>
+      <div id="guestActions" class="top-actions">
+        <button id="openLoginBtn" type="button" class="secondary">Войти</button>
+        <button id="openRegisterBtn" type="button">Регистрация</button>
+      </div>
 
-  <input id="searchInput" placeholder="Например: не могу войти в почту">
-  <button id="searchBtn">Найти</button>
+      <section id="userBlock" class="panel user-panel" hidden>
+        <p><strong id="userName"></strong></p>
+        <p class="muted">Роли: <span id="userRole"></span></p>
+        <div id="roleLinks" class="links"></div>
+        <button id="logoutBtn" class="danger" type="button">Выйти</button>
+      </section>
+    </header>
 
-  <a href="catalog.html">Открыть каталог инструкций</a>
+    <section class="panel">
+      <h2>Как пользоваться сайтом</h2>
+      <ol class="guide-list">
+        <li>Введите ваш вопрос в поиск.</li>
+        <li>Откройте подходящую инструкцию.</li>
+        <li>Если инструкция не помогла, нажмите "Нужна помощь?".</li>
+      </ol>
+    </section>
+    
+    <section class="panel search-panel">
+      <h2>Найти инструкцию</h2>
+      <p class="muted">Введите проблему обычными словами, например: "не могу войти в почту".</p>
+      <div class="search-form">
+        <input id="searchInput" placeholder="Опишите проблему">
+        <button id="searchBtn" type="button">Найти инструкцию</button>
+      </div>
+      <ul id="results"></ul>
+    </section>
 
-  <ul id="results"></ul>
-</div>
+    
 
-<script src="js/search.js"></script>
+    <section class="quick-grid">
+      <a class="panel quick-card" href="catalog.html">
+        <h2>Каталог</h2>
+        <p class="muted">Полный список инструкций по темам.</p>
+      </a>
+      <a class="panel quick-card" href="support.html">
+        <h2>Нужна помощь?</h2>
+        <p class="muted">Оставьте обращение и получите ответ специалиста.</p>
+      </a>
+    </section>
+
+    <p id="indexStatus" class="status"></p>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
 </body>
 </html>

@@ -2,18 +2,65 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Инструкция</title>
-  <a href="index.html">На главную</a>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Статья</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <main class="container">
+    <nav class="links top-nav">
+      <div class="nav-left">
+        <a href="index.html">Главная</a>
+        <a href="catalog.html">Каталог</a>
+      </div>
+      <div class="nav-right">
+        <a href="support.html">Сообщить об ошибке</a>
+      </div>
+    </nav>
 
-<div class="container">
-  <h1 id="title"></h1>
-  <ol id="steps"></ol>
-  <a href="catalog.html">Назад</a>
-</div>
+    <h1 id="title">Загрузка...</h1>
+    <div id="meta" class="meta"></div>
+    <p class="muted">Категории: <span id="categories"></span></p>
 
-<script src="js/article.js"></script>
+    <article id="content" class="panel"></article>
+
+    <section class="panel">
+      <h2>Оцените статью</h2>
+      <p class="muted">Пять звёзд: от “непонятно” до “очень понятно”.</p>
+      <div id="rateButtons" class="stars">
+        <button type="button" data-rate="1">1</button>
+        <button type="button" data-rate="2">2</button>
+        <button type="button" data-rate="3">3</button>
+        <button type="button" data-rate="4">4</button>
+        <button type="button" data-rate="5">5</button>
+      </div>
+      <p id="ratingStatus" class="status" role="status"></p>
+    </section>
+
+    <section class="panel">
+      <h2>Комментарии</h2>
+      <p id="authRequiredNote" class="muted">Чтобы оставить оценку и комментарий, потребуется вход. Окно откроется автоматически при действии.</p>
+      <div id="feedbackAuthActions" class="stack-inline">
+        <button id="articleLoginBtn" type="button" class="secondary">Войти</button>
+        <button id="articleRegisterBtn" type="button">Регистрация</button>
+      </div>
+      <form id="commentForm" class="stack">
+        <textarea id="commentText" rows="4" placeholder="Что было понятно, а что нет?"></textarea>
+        <button id="commentSubmit" type="submit">Отправить комментарий</button>
+      </form>
+      <ul id="commentsList"></ul>
+    </section>
+
+    <section class="panel">
+      <h2>Не помогло?</h2>
+      <p class="muted">Попробуйте похожие статьи.</p>
+      <ul id="similarList"></ul>
+    </section>
+
+    <p id="articleStatus" class="status"></p>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/article.js"></script>
 </body>
 </html>

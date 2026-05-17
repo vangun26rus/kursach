@@ -1,0 +1,15 @@
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\bin\Debug\net9.0\tmpdocxreader.exe
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\bin\Debug\net9.0\tmpdocxreader.deps.json
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\bin\Debug\net9.0\tmpdocxreader.runtimeconfig.json
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\bin\Debug\net9.0\tmpdocxreader.dll
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\bin\Debug\net9.0\tmpdocxreader.pdb
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\tmpdocxreader.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\tmpdocxreader.AssemblyInfoInputs.cache
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\tmpdocxreader.AssemblyInfo.cs
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\tmpdocxreader.csproj.CoreCompileInputs.cache
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\tmpdocxreader.sourcelink.json
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\tmpdocxreader.dll
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\refint\tmpdocxreader.dll
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\tmpdocxreader.pdb
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\tmpdocxreader.genruntimeconfig.cache
+C:\Users\User\Documents\Ycheba\nichiporuk\kursach\digital-help-system\tmpdocxreader\obj\Debug\net9.0\ref\tmpdocxreader.dll

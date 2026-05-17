@@ -1,27 +1,151 @@
-let articles = [];
+let currentUser = null;
 
-fetch('data/articles.json')
-  .then(response => response.json())
-  .then(data => articles = data);
+async function initIndexPage() {
+  ensureAuthModal();
+  currentUser = await getCurrentUser();
+  renderSession();
+  document.getElementById("results").innerHTML = "";
 
-document.getElementById('searchBtn').addEventListener('click', function () {
-  const query = document.getElementById('searchInput').value.toLowerCase();
-  const resultsList = document.getElementById('results');
+  document.getElementById("searchBtn").addEventListener("click", searchArticles);
+  document.getElementById("searchInput").addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      searchArticles();
+    }
+  });
+  document.getElementById("openLoginBtn").addEventListener("click", () => openAuthModal("login"));
+  document.getElementById("openRegisterBtn").addEventListener("click", () => openAuthModal("register"));
+  document.getElementById("logoutBtn").addEventListener("click", onLogout);
+  window.addEventListener("auth:changed", onAuthChanged);
+}
 
-  resultsList.innerHTML = '';
+function renderSession() {
+  const guestActions = document.getElementById("guestActions");
+  const userBlock = document.getElementById("userBlock");
+  const roleLinks = document.getElementById("roleLinks");
+  const greeting = document.getElementById("greeting");
 
-  const results = articles.filter(article =>
-    article.keywords.some(keyword => query.includes(keyword))
-  );
-
-  if (results.length === 0) {
-    resultsList.innerHTML = '<li>Ничего не найдено</li>';
+  if (!currentUser) {
+    guestActions.hidden = false;
+    userBlock.hidden = true;
+    greeting.textContent = "Найдите нужную инструкцию за пару шагов.";
+    roleLinks.innerHTML = "";
     return;
   }
 
-  results.forEach(article => {
-    const li = document.createElement('li');
-    li.innerHTML = `<a href="article.html?id=${article.id}">${article.title}</a>`;
-    resultsList.appendChild(li);
-  });
-});
+  guestActions.hidden = true;
+  userBlock.hidden = false;
+  document.getElementById("userName").textContent = currentUser.displayName;
+  document.getElementById("userRole").textContent = currentUser.roles.join(", ");
+  greeting.textContent = `Здравствуйте, ${currentUser.displayName}. Что ищем сегодня?`;
+
+  const links = ['<a href="catalog.html">Каталог</a>', '<a href="support.html">Нужна помощь?</a>'];
+  if (hasRole(currentUser, "Author") || hasRole(currentUser, "Admin")) {
+    links.push('<a href="author.html">Панель автора</a>');
+  }
+  if (hasRole(currentUser, "Admin")) {
+    links.push('<a href="admin.html">Панель админа</a>');
+  }
+  roleLinks.innerHTML = links.join("");
+}
+
+async function onLogout() {
+  try {
+    await apiRequest("/api/auth/logout", { method: "POST" });
+  } catch {
+    // ignore
+  }
+  setAuthToken("");
+  currentUser = null;
+  emitAuthChanged(null);
+  renderSession();
+  notify("indexStatus", "Вы вышли из системы.");
+}
+
+function onAuthChanged(event) {
+  currentUser = event.detail && event.detail.user ? event.detail.user : null;
+  if (!currentUser) {
+    setAuthToken("");
+  }
+  renderSession();
+  if (currentUser) {
+    notify("indexStatus", `Вход выполнен. Добро пожаловать, ${currentUser.displayName}.`);
+  }
+}
+
+async function searchArticles() {
+  const query = document.getElementById("searchInput").value.trim();
+  const resultsList = document.getElementById("results");
+  if (!query) {
+    resultsList.innerHTML = "";
+    return;
+  }
+  resultsList.innerHTML = "<li>Загрузка...</li>";
+
+  try {
+    const searchQueries = buildSearchQueries(query);
+    const articles = await loadArticlesForQueries(searchQueries);
+    if (!articles.length) {
+      resultsList.innerHTML = "<li>Ничего не найдено.</li>";
+      return;
+    }
+
+    resultsList.innerHTML = "";
+    for (const article of articles) {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <a class="result-title" href="article.html?id=${article.id}">${escapeHtml(article.title)}</a>
+        <p class="muted">${escapeHtml(article.summary)}</p>
+        <p class="muted">Автор: ${escapeHtml(article.authorName)} | Рейтинг: ${article.averageRating.toFixed(2)} (${article.ratingsCount})</p>
+      `;
+      resultsList.appendChild(li);
+    }
+  } catch (error) {
+    resultsList.innerHTML = `<li>Ошибка: ${escapeHtml(error.message)}</li>`;
+  }
+}
+
+function buildSearchQueries(query) {
+  const source = query.trim().toLowerCase();
+  const variants = new Set([source]);
+
+  for (const token of source.split(/\s+/).filter(Boolean)) {
+    if (token.length >= 5 && /[а-яё]/i.test(token)) {
+      variants.add(stemRussianToken(token));
+    }
+
+    if (token === "wifi" || token === "wi-fi" || token === "вайфай" || token === "вай фай") {
+      variants.add("wifi");
+      variants.add("вайфай");
+      variants.add("wi fi");
+    }
+  }
+
+  return Array.from(variants).filter(Boolean);
+}
+
+function stemRussianToken(token) {
+  const endings = ["иями", "ями", "ами", "ого", "ему", "ому", "ий", "ый", "ой", "ах", "ях", "ам", "ям", "а", "я", "ы", "и", "е", "о", "у", "ю"];
+  for (const ending of endings) {
+    if (token.endsWith(ending) && token.length - ending.length >= 3) {
+      return token.slice(0, -ending.length);
+    }
+  }
+  return token;
+}
+
+async function loadArticlesForQueries(queries) {
+  const byId = new Map();
+
+  for (const q of queries) {
+    const items = await apiRequest(`/api/articles?search=${encodeURIComponent(q)}`);
+    for (const article of items) {
+      if (!byId.has(article.id)) {
+        byId.set(article.id, article);
+      }
+    }
+  }
+
+  return Array.from(byId.values());
+}
+
+initIndexPage();

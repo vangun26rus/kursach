@@ -1,0 +1,6 @@
+@DigitalHelpSystem.Api_HostAddress = http://localhost:5183
+
+GET {{DigitalHelpSystem.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

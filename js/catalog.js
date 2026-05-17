@@ -1,25 +1,49 @@
-fetch('data/articles.json')
-  .then(response => response.json())
-  .then(articles => {
-    const catalog = document.getElementById('catalog');
-    const categories = {};
+async function initCatalog() {
+  const catalog = document.getElementById("catalog");
+  catalog.textContent = "Загрузка...";
 
-    articles.forEach(article => {
-      if (!categories[article.category]) {
-        categories[article.category] = [];
+  try {
+    const articles = await apiRequest("/api/articles");
+    const grouped = new Map();
+
+    for (const article of articles) {
+      const categories = article.categories.length ? article.categories : ["Без категории"];
+      for (const name of categories) {
+        if (!grouped.has(name)) {
+          grouped.set(name, []);
+        }
+        grouped.get(name).push(article);
       }
-      categories[article.category].push(article);
-    });
-
-    for (const category in categories) {
-      const h2 = document.createElement('h2');
-      h2.textContent = category;
-      catalog.appendChild(h2);
-
-      categories[category].forEach(article => {
-        const p = document.createElement('p');
-        p.innerHTML = `<a href="article.html?id=${article.id}">${article.title}</a>`;
-        catalog.appendChild(p);
-      });
     }
-  });
+
+    catalog.innerHTML = "";
+    if (!grouped.size) {
+      catalog.textContent = "Статей пока нет.";
+      return;
+    }
+
+    const sortedCategories = [...grouped.keys()].sort((a, b) => a.localeCompare(b, "ru"));
+    for (const categoryName of sortedCategories) {
+      const section = document.createElement("section");
+      section.className = "panel";
+      section.innerHTML = `<h2>${escapeHtml(categoryName)}</h2>`;
+
+      for (const article of grouped.get(categoryName)) {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <a href="article.html?id=${article.id}">${escapeHtml(article.title)}</a>
+          <p>${escapeHtml(article.summary)}</p>
+          <p class="muted">Автор: ${escapeHtml(article.authorName)} | Рейтинг: ${article.averageRating.toFixed(2)} (${article.ratingsCount})</p>
+        `;
+        section.appendChild(card);
+      }
+
+      catalog.appendChild(section);
+    }
+  } catch (error) {
+    catalog.textContent = `Ошибка загрузки каталога: ${error.message}`;
+  }
+}
+
+initCatalog();

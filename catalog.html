@@ -2,18 +2,25 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Каталог</title>
-  <a href="index.html">На главную</a>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Каталог статей</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <main class="container">
+    <nav class="links top-nav">
+      <div class="nav-left">
+        <a href="index.html">⌂ Главная</a>
+      </div>
+      <div class="nav-right">
+        <a href="support.html">Нужна помощь?</a>
+      </div>
+    </nav>
+    <h1>Каталог инструкций</h1>
+    <div id="catalog"></div>
+  </main>
 
-<div class="container">
-  <h1>Каталог инструкций</h1>
-  <div id="catalog"></div>
-  
-</div>
-
-<script src="js/catalog.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/catalog.js"></script>
 </body>
 </html>

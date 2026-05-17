@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель администратора</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container">
+    <nav class="links">
+      <a href="index.html">Главная</a>
+      <a href="support.html">Обращения и чат</a>
+    </nav>
+    <h1>Панель администратора</h1>
+
+    <section class="panel" id="adminStats"></section>
+
+    <section class="panel">
+      <h2>Пользователи и роли</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Имя</th>
+            <th>Email</th>
+            <th>Роль</th>
+            <th>Действие</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody"></tbody>
+      </table>
+    </section>
+
+    <p id="adminStatus" class="status"></p>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

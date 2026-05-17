@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель автора</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="container">
+    <nav class="links">
+      <a href="index.html">Главная</a>
+      <a href="catalog.html">Каталог</a>
+      <a href="support.html">Чат поддержки</a>
+    </nav>
+
+    <h1>Панель автора</h1>
+    <section class="panel" id="authorStats"></section>
+
+    <section class="panel">
+      <h2 id="articleEditorTitle">Создать статью</h2>
+      <p id="articleEditorHint" class="muted" hidden>Режим редактирования статьи.</p>
+      <form id="articleForm" class="stack">
+        <input id="articleTitle" type="text" placeholder="Заголовок" required>
+        <input id="articleSummary" type="text" placeholder="Краткое описание">
+        <section class="panel">
+          <h3>Шаблон шага с картинкой</h3>
+          <p class="muted">Добавьте шаг, при необходимости прикрепите изображение, затем шаг появится в HTML статьи.</p>
+          <div class="stack">
+            <label for="stepText">Текст шага</label>
+            <textarea id="stepText" rows="3" placeholder="Например: Нажмите кнопку «Настройки»"></textarea>
+            <label for="stepImage">Картинка шага (необязательно)</label>
+            <input id="stepImage" type="file" accept="image/*">
+            <label for="stepImageAlt">Описание картинки (alt)</label>
+            <input id="stepImageAlt" type="text" placeholder="Например: Кнопка настроек в правом верхнем углу">
+            <div class="stack-inline">
+              <button id="addStepBtn" type="button">Добавить шаг</button>
+              <button id="importStepsBtn" type="button" class="secondary">Загрузить шаги из HTML</button>
+              <button id="clearStepsBtn" type="button" class="secondary">Очистить шаги</button>
+            </div>
+            <ul id="stepsPreview"></ul>
+          </div>
+        </section>
+        <textarea id="articleContent" rows="8" placeholder="<p>HTML-контент статьи</p>" required></textarea>
+        <input id="articleCategories" type="text" placeholder="Категории через запятую, например: Почта, Безопасность">
+        <input id="articleKeywords" type="text" placeholder="Ключевые слова через запятую">
+        <select id="articleStatus">
+          <option value="Published">Опубликовать</option>
+          <option value="Draft">Черновик</option>
+          <option value="Archived">Архив</option>
+        </select>
+        <div class="stack-inline">
+          <button id="articleSaveBtn" type="submit">Сохранить статью</button>
+          <button id="articleCancelBtn" type="button" class="secondary" hidden>Отменить редактирование</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <h2>Мои статьи</h2>
+      <ul id="myArticles"></ul>
+    </section>
+
+    <p id="authorStatus" class="status"></p>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/author.js"></script>
+</body>
+</html>

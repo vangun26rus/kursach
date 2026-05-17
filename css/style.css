@@ -1,178 +1,509 @@
-/* Основные цвета */
 :root {
-  --bg-primary: #121212;        /* Темный фон страницы */
-  --bg-secondary: #1e1e1e;      /* Фон карточек/контейнеров */
-  --text-primary: #e0e0e0;      /* Основной текст */
-  --text-secondary: #a0a0a0;    /* Вторичный текст */
-  --accent: #bb86fc;            /* Акцентный цвет (Material violet) */
-  --accent-hover: #9a67ea;      /* Акцент при наведении */
-  --border-color: #333333;      /* Цвет границ */
-  --success: #4caf50;           /* Зелёный для успеха */
-  --warning: #ff9800;           /* Жёлтый/оранжевый для предупреждений */
-  --error: #f44336;            /* Красный для ошибок */
+  --bg: #eff4f8;
+  --surface: #ffffff;
+  --panel: #f6f9fc;
+  --text: #11243d;
+  --muted: #425872;
+  --accent: #0056b3;
+  --accent-dark: #003f85;
+  --danger: #b42318;
+  --danger-dark: #8f1b13;
+  --border: #b7c6d8;
+  --focus: #ffb800;
 }
 
-/* Сброс стилей и базовая настройка */
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Современный шрифт */
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  line-height: 1.6;
-  min-height: 100vh; /* Тело занимает минимум высоту экрана */
-  display: flex; /* Используем flex для центровки контента */
-  justify-content: center;
-  align-items: flex-start; /* Но прижимаем контент к верху */
-  padding: 20px; /* Отступы от краёв экрана */
+[hidden] {
+  display: none !important;
 }
 
-/* Контейнер страницы */
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 24px;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 15% 0%, #d6e6fb 0%, rgba(214, 230, 251, 0) 45%),
+    linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
+  font-family: "Trebuchet MS", "Segoe UI", "Tahoma", sans-serif;
+  line-height: 1.6;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
 .container {
-  width: 100%;
-  max-width: 800px; /* Максимальная ширина */
-  margin-top: 40px; /* Отступ сверху после body padding */
-  background: var(--bg-secondary);
-  padding: 30px;
-  border-radius: 12px; /* Более закругленные углы */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Тень для глубины */
-  border: 1px solid var(--border-color); /* Легкая граница */
+  width: min(100%, 1040px);
+  margin: 0 auto;
+  padding: 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 18px 48px rgba(28, 46, 78, 0.12);
+}
+
+h1,
+h2 {
+  margin: 0 0 12px;
+  line-height: 1.25;
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 25px; /* Отступ снизу для заголовка */
-  color: var(--accent); /* Акцентный цвет для заголовков */
-  font-weight: 600; /* Чуть жирнее */
-  font-size: 1.8rem; /* Размер шрифта */
+  font-size: clamp(1.8rem, 2.8vw, 2.4rem);
+  color: #0b2b59;
 }
 
-/* Поля ввода */
-input {
-  width: 100%;
-  padding: 15px;
-  font-size: 16px;
-  background: #2d2d2d; /* Темный фон поля */
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px; /* Закругления */
-  outline: none; /* Убираем стандартный outline */
-  transition: border-color 0.3s ease; /* Плавный переход при фокусе */
+h2 {
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
 }
 
-input:focus {
-  border-color: var(--accent); /* Цвет границы при фокусе */
+p {
+  margin: 0 0 10px;
 }
 
-/* Кнопки */
-button {
-  width: 100%;
-  padding: 15px;
-  font-size: 16px;
-  background: var(--accent); /* Акцентный цвет фона */
-  color: #000000; /* Черный текст на светлом акценте */
-  border: none;
-  border-radius: 8px; /* Закругления */
-  cursor: pointer;
-  font-weight: 600; /* Жирный шрифт */
-  margin-top: 10px; /* Отступ сверху */
-  transition: background 0.3s ease, transform 0.1s ease; /* Эффекты */
-}
-
-button:hover {
-  background: var(--accent-hover); /* Более темный акцент при наведении */
-  transform: translateY(-2px); /* Легкий подъем при наведении */
-}
-
-button:active {
-  transform: translateY(0); /* Возвращаем на место при клике */
-}
-
-/* Ссылки */
 a {
-  display: inline-block; /* Не на всю ширину */
-  margin-top: 15px;
-  text-align: center;
   color: var(--accent);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s ease; /* Плавный переход цвета */
+  font-weight: 600;
 }
 
 a:hover {
-  color: var(--accent-hover);
-  text-decoration: underline;
+  color: var(--accent-dark);
 }
 
-/* Списки результатов */
-ul#results {
-  margin-top: 20px;
-  padding-left: 20px;
-  list-style-type: disc; /* Простые точки */
+.lead {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #203652;
 }
 
-ul#results li {
+.muted {
+  color: var(--muted);
+  font-size: 1.02rem;
+}
+
+.panel {
+  margin-top: 18px;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.user-panel {
+  max-width: 460px;
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.top-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.search-panel {
+  margin-top: 24px;
+}
+
+.search-form {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.quick-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.quick-card h2 {
+  color: #0f2f5a;
+}
+
+.quick-card:hover {
+  border-color: #7f9fc8;
+  box-shadow: 0 10px 24px rgba(25, 52, 90, 0.12);
+}
+
+.guide-list {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.guide-list li {
+  margin-bottom: 8px;
+  padding: 0;
+  border: none;
+  background: transparent;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stack-inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+input,
+textarea,
+select,
+button {
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  font-size: 1.06rem;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 12px 14px;
+  color: var(--text);
+  background: #fff;
+}
+
+textarea {
+  resize: vertical;
+}
+
+button {
+  width: 100%;
+  padding: 12px 14px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+}
+
+button:disabled {
+  background: #8ca0b9;
+  border-color: #8ca0b9;
+  cursor: not-allowed;
+}
+
+.top-actions button,
+.stack-inline button,
+.stars button,
+.links button,
+.modal-close,
+.tab-btn {
+  width: auto;
+}
+
+.secondary {
+  color: #153353;
+  background: #e6f0ff;
+  border-color: #80a6da;
+}
+
+.secondary:hover {
+  color: #fff;
+  background: #2b5d9b;
+  border-color: #2b5d9b;
+}
+
+.danger {
+  background: var(--danger);
+  border-color: var(--danger);
+}
+
+.danger:hover {
+  background: var(--danger-dark);
+  border-color: var(--danger-dark);
+}
+
+label {
+  font-weight: 600;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   margin-bottom: 10px;
-  padding: 8px 0; /* Отступы внутри элемента списка */
-  border-bottom: 1px solid var(--border-color); /* Легкая разделительная линия */
 }
 
-/* Список шагов в статье */
-ol#steps {
-  margin-top: 20px;
-  padding-left: 25px; /* Отступ для номеров */
+.top-nav {
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
 }
 
-ol#steps li {
-  margin-bottom: 15px;
-  padding: 10px;
-  background: #252525; /* Фон для каждого шага */
-  border-radius: 6px;
-  border-left: 4px solid var(--accent); /* Акцентная полоска слева */
+.nav-left,
+.nav-right {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
 
-/* Дополнительно: стили для каталога */
-#catalog {
-  margin-top: 20px;
+.nav-right {
+  margin-left: auto;
 }
 
-#catalog a {
-  display: block; /* На всю ширину */
-  padding: 12px 15px;
-  margin-bottom: 10px;
-  background: #252525;
-  border-radius: 8px;
-  border-left: 3px solid var(--accent);
-  transition: background 0.2s ease;
+.links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid #8fb0d6;
+  background: linear-gradient(180deg, #ffffff 0%, #e9f2ff 100%);
+  color: #123762;
+  text-decoration: none;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(26, 58, 102, 0.12);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 }
 
-#catalog a:hover {
-  background: #2d2d2d;
+.links a:hover {
+  transform: translateY(-1px);
+  background: linear-gradient(180deg, #f8fbff 0%, #dcecff 100%);
+  box-shadow: 0 8px 16px rgba(26, 58, 102, 0.18);
+  color: #0e2d50;
   text-decoration: none;
 }
 
-@media (max-width: 600px) {
-  .container {
-      padding: 20px;
-      margin-top: 20px;
-  }
-
-  h1 {
-      font-size: 1.5rem;
-  }
-
-  input, button {
-      padding: 12px;
-  }
+.links a:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 10px rgba(26, 58, 102, 0.14);
 }
 
-ol#steps li img {
-  display: block;
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+li {
+  margin-bottom: 10px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.result-title {
+  display: inline-block;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+  color: var(--muted);
+}
+
+.status {
   margin-top: 12px;
+  min-height: 24px;
+  font-weight: 600;
+}
+
+.success {
+  color: #0f7b3d;
+}
+
+.error {
+  color: #b42318;
+}
+
+.stars {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(58px, 1fr));
+  gap: 8px;
+}
+
+.stars button {
+  justify-self: stretch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid var(--border);
+  padding: 10px;
+  text-align: left;
+  background: #fff;
+}
+
+.data-table button {
+  width: auto;
+}
+
+.data-table th {
+  background: #eaf1f8;
+}
+
+.checkline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkline input {
+  width: auto;
+}
+
+.link-btn {
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  padding: 0;
+  font-weight: 700;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+  background: transparent;
+}
+
+.step-preview-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-top: 8px;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border);
+}
+
+.step-remove-btn {
+  margin-top: 10px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(17, 36, 61, 0.5);
+}
+
+.modal-window {
+  position: relative;
+  width: min(100%, 560px);
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 22px 44px rgba(14, 30, 53, 0.28);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #eef3f8;
+  color: #173357;
+  border-color: #c6d4e3;
+  font-weight: 700;
+}
+
+.modal-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.tab-btn {
+  color: #1c3a60;
+  background: #edf3fb;
+  border-color: #bbcee3;
+}
+
+.tab-btn.is-active {
+  color: #fff;
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+*:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 16px;
+    border-radius: 14px;
+  }
+
+  .search-form {
+    grid-template-columns: 1fr;
+  }
+
+  .stack-inline {
+    align-items: stretch;
+  }
+
+  .top-nav {
+    align-items: stretch;
+  }
+
+  .nav-left,
+  .nav-right {
+    width: 100%;
+  }
+
+  .nav-right {
+    justify-content: flex-end;
+  }
+
+  .stack-inline button,
+  .top-actions button,
+  .top-nav a {
+    width: 100%;
+  }
 }
