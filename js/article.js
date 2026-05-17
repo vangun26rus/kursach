@@ -36,6 +36,11 @@ async function initArticlePage() {
   document.getElementById("rateButtons").addEventListener("click", onRateArticle);
   document.getElementById("articleLoginBtn").addEventListener("click", () => onManualAuth("login"));
   document.getElementById("articleRegisterBtn").addEventListener("click", () => onManualAuth("register"));
+  // Обработчики для кнопок в навигации
+  const navLoginBtn = document.getElementById("articleLoginBtnNav");
+  const navRegisterBtn = document.getElementById("articleRegisterBtnNav");
+  if (navLoginBtn) navLoginBtn.addEventListener("click", () => onManualAuth("login"));
+  if (navRegisterBtn) navRegisterBtn.addEventListener("click", () => onManualAuth("register"));
   window.addEventListener("auth:changed", onAuthChanged);
   
   // Инициализация интерактивности звезд рейтинга
@@ -98,14 +103,18 @@ function renderComments(comments) {
 }
 
 function updateFeedbackState(isAuthenticated) {
-  const note = document.getElementById("authRequiredNote");
   const actions = document.getElementById("feedbackAuthActions");
+  const navLoginBtn = document.getElementById("articleLoginBtnNav");
+  const navRegisterBtn = document.getElementById("articleRegisterBtnNav");
+  
   if (isAuthenticated) {
-    note.textContent = "Вы вошли в систему. Можно оценивать статью и оставлять комментарии.";
     actions.hidden = true;
+    if (navLoginBtn) navLoginBtn.hidden = true;
+    if (navRegisterBtn) navRegisterBtn.hidden = true;
   } else {
-    note.textContent = "Чтобы оставить оценку и комментарий, потребуется вход. Окно откроется автоматически при действии.";
     actions.hidden = false;
+    if (navLoginBtn) navLoginBtn.hidden = false;
+    if (navRegisterBtn) navRegisterBtn.hidden = false;
   }
 }
 
