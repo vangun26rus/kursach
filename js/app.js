@@ -10,9 +10,19 @@ let authModalResolve = null;
 async function apiRequest(path, options = {}) {
   const url = `${API_BASE_URL}${path}`;
   const token = getAuthToken();
+  
+  // Добавляем уникальный параметр для предотвращения кэширования GET-запросов
+  const isGetRequest = !options.method || options.method === 'GET';
+  const separator = url.includes('?') ? '&' : '?';
+  const finalUrl = isGetRequest ? `${url}${separator}_t=${Date.now()}` : url;
+  
   const headers = {
     ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    ...(options.headers || {})
+    ...(options.headers || {}),
+    // Явно указываем, что не хотим кэширования
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
   };
 
   if (options.body !== undefined) {
@@ -31,7 +41,7 @@ async function apiRequest(path, options = {}) {
     settings.body = JSON.stringify(options.body);
   }
 
-  const response = await fetch(url, settings);
+  const response = await fetch(finalUrl, settings);
   if (response.status === 204) {
     return null;
   }
