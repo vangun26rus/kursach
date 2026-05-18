@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DigitalHelpSystem.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ff67572371aebbb38def9055cece9a6f1b20e8c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15e1f1d4b49f8a86a4a88fbe9323126643e98f65")]
 [assembly: System.Reflection.AssemblyProductAttribute("DigitalHelpSystem.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DigitalHelpSystem.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
