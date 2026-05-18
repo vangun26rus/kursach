@@ -61,6 +61,8 @@ public class Article
     public ICollection<ArticleKeyword> Keywords { get; set; } = new List<ArticleKeyword>();
     public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
+    public ICollection<ViewedArticle> ViewedArticles { get; set; } = new List<ViewedArticle>();
 }
 
 public class Category

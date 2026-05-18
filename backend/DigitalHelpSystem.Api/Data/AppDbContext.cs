@@ -105,7 +105,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                 .WithMany(x => x.Favorites)
                 .HasForeignKey(x => x.UserId);
             e.HasOne(x => x.Article)
-                .WithMany()
+                .WithMany(x => x.UserFavorites)
                 .HasForeignKey(x => x.ArticleId);
             e.HasIndex(x => x.AddedAt);
         });
@@ -117,7 +117,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
                 .WithMany(x => x.ViewedArticles)
                 .HasForeignKey(x => x.UserId);
             e.HasOne(x => x.Article)
-                .WithMany()
+                .WithMany(x => x.ViewedArticles)
                 .HasForeignKey(x => x.ArticleId);
             e.HasIndex(x => x.ViewedAt);
         });
