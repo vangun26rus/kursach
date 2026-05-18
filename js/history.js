@@ -22,11 +22,19 @@ async function initHistoryPage() {
   ensureAuthModal();
   currentUser = await getCurrentUser();
   window.addEventListener("auth:changed", onAuthChanged);
+  window.addEventListener("focus", onWindowFocus);
   if (!currentUser) {
     renderLoginPrompt();
     return;
   }
   await loadHistory();
+}
+
+function onWindowFocus() {
+  if (!currentUser) {
+    return;
+  }
+  loadHistory();
 }
 
 function renderLoginPrompt() {
@@ -54,7 +62,7 @@ async function loadHistory() {
   list.innerHTML = "<p>Загрузка...</p>";
 
   try {
-    const historyItems = await apiRequest("/api/users/history");
+    const historyItems = await apiRequest(`/api/users/history?ts=${Date.now()}`);
     if (!historyItems.length) {
       list.innerHTML = `<div class="panel"><p>История просмотров пока пуста.</p><p>Откройте статью, чтобы сохранить её в истории.</p></div>`;
       return;

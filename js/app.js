@@ -1,6 +1,6 @@
 const API_BASE_URL =
   localStorage.getItem("apiBaseUrl") ||
-  (window.location.port === "5000" ? "" : "http://localhost:5000");
+  (window.location.protocol === "file:" ? "http://localhost:5000" : window.location.port === "5000" ? "" : "http://localhost:5000");
 const AUTH_MODAL_ID = "authModal";
 const AUTH_TOKEN_KEY = "authToken";
 
@@ -10,14 +10,21 @@ let authModalResolve = null;
 async function apiRequest(path, options = {}) {
   const url = `${API_BASE_URL}${path}`;
   const token = getAuthToken();
+  const headers = {
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(options.headers || {})
+  };
+
+  if (options.body !== undefined) {
+    headers["Content-Type"] = "application/json";
+  }
+
   const settings = {
     method: options.method || "GET",
     credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...(options.headers || {})
-    }
+    mode: "cors",
+    cache: "no-store",
+    headers
   };
 
   if (options.body !== undefined) {
@@ -56,7 +63,7 @@ function escapeHtml(value) {
 
 async function getCurrentUser() {
   try {
-    return await apiRequest("/api/auth/me");
+    return await apiRequest(`/api/auth/me?ts=${Date.now()}`);
   } catch {
     return null;
   }

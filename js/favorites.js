@@ -22,11 +22,19 @@ async function initFavoritesPage() {
   ensureAuthModal();
   currentUser = await getCurrentUser();
   window.addEventListener("auth:changed", onAuthChanged);
+  window.addEventListener("focus", onWindowFocus);
   if (!currentUser) {
     renderLoginPrompt();
     return;
   }
   await loadFavorites();
+}
+
+function onWindowFocus() {
+  if (!currentUser) {
+    return;
+  }
+  loadFavorites();
 }
 
 function renderLoginPrompt() {
@@ -54,7 +62,7 @@ async function loadFavorites() {
   list.innerHTML = "<p>Загрузка...</p>";
 
   try {
-    const favorites = await apiRequest("/api/users/favorites");
+    const favorites = await apiRequest(`/api/users/favorites?ts=${Date.now()}`);
     if (!favorites || !favorites.length) {
       list.innerHTML = `<div class="panel"><p>У вас пока нет избранных статей.</p><p>Добавьте статью в избранное на странице статьи.</p></div>`;
       return;
