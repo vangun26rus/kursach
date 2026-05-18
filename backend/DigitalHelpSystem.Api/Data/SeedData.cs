@@ -246,14 +246,30 @@ public static class SeedData
             await userManager.UpdateAsync(user);
         }
 
-        var roles = await userManager.GetRolesAsync(user);
-        if (!roles.Contains(seedUser.Role))
+        // Для админа добавляем обе роли: Admin и Author
+        var rolesToAdd = new List<string>();
+        if (seedUser.Email.Equals("admin@digital-help.local", StringComparison.OrdinalIgnoreCase))
         {
-            if (roles.Count > 0)
-            {
-                await userManager.RemoveFromRolesAsync(user, roles);
-            }
-            await userManager.AddToRoleAsync(user, seedUser.Role);
+            rolesToAdd.Add("Admin");
+            rolesToAdd.Add("Author");
+        }
+        else
+        {
+            rolesToAdd.Add(seedUser.Role);
+        }
+
+        var currentRoles = await userManager.GetRolesAsync(user);
+        
+        // Удаляем все текущие роли
+        if (currentRoles.Count > 0)
+        {
+            await userManager.RemoveFromRolesAsync(user, currentRoles);
+        }
+        
+        // Добавляем нужные роли
+        foreach (var role in rolesToAdd)
+        {
+            await userManager.AddToRoleAsync(user, role);
         }
 
         return user;
