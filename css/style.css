@@ -108,7 +108,7 @@ a:hover {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 20px;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .header-main {
@@ -118,8 +118,8 @@ a:hover {
 
 .header-actions {
   display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  flex-wrap: nowrap;
+  align-items: center;
   gap: 12px;
 }
 
@@ -389,7 +389,8 @@ a:hover {
   gap: 10px;
 }
 
-.auth-buttons button {
+.auth-buttons button,
+.auth-buttons a {
   height: 48px;
   padding: 0 18px;
   white-space: nowrap;

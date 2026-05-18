@@ -24,29 +24,30 @@ venv/
 # Editors
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# OS generated files
+# OS specific
 .DS_Store
 Thumbs.db
 
-# Coverage reports
+# Coverage
 coverage/
 htmlcov/
 .coverage
 
 # Python specific
+*.pyc
+__pycache__/
 .pytest_cache/
 .mypy_cache/
-*.pyc
-*.pyo
-*.pyd
 
-# JavaScript specific
+# Node.js specific
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Compressed files
+# Compression files
 *.zip
 *.gz
 *.tar
