@@ -22,18 +22,6 @@ function renderSession() {
   renderHeaderButtons(currentUser);
 }
 
-async function onLogout() {
-  try {
-    await apiRequest("/api/auth/logout", { method: "POST" });
-  } catch {
-    // ignore
-  }
-  setAuthToken("");
-  currentUser = null;
-  emitAuthChanged(null);
-  renderSession();
-}
-
 function onAuthChanged(event) {
   currentUser = event.detail && event.detail.user ? event.detail.user : null;
   if (!currentUser) {

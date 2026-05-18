@@ -328,7 +328,17 @@ function renderHeaderButtons(user) {
   
   let buttonsHtml = '';
   
-  buttonsHtml += `<a href="support.html" class="help-btn btn-help-header" style="text-decoration:none;">Нужна помощь?</a>`;
+  buttonsHtml += `<a href="support.html" class="help-btn btn-help-header" style="text-decoration:none;height:48px;padding:12px 18px;display:inline-flex;align-items:center;gap:8px;border-radius:12px;font-weight:700;color:white;">
+    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:22px;height:22px;">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      <circle cx="9" cy="9" r="1"></circle>
+      <circle cx="15" cy="9" r="1"></circle>
+      <path d="M9 13h.01"></path>
+      <path d="M15 13h.01"></path>
+      <path d="M10 17h4"></path>
+    </svg>
+    <span>Нужна помощь?</span>
+  </a>`;
   
   if (Array.isArray(user.roles)) {
     user.roles.forEach(role => {
