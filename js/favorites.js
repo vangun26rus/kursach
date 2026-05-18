@@ -55,7 +55,7 @@ async function loadFavorites() {
 
   try {
     const favorites = await apiRequest("/api/users/favorites");
-    if (!favorites.length) {
+    if (!favorites || !favorites.length) {
       list.innerHTML = `<div class="panel"><p>У вас пока нет избранных статей.</p><p>Добавьте статью в избранное на странице статьи.</p></div>`;
       return;
     }
@@ -64,7 +64,7 @@ async function loadFavorites() {
     for (const article of favorites) {
       const card = document.createElement("article");
       card.className = "card catalog-card";
-      const ratingStars = renderRatingStars(article.averageRating);
+      const ratingStars = renderRatingStars(article.averageRating || 0);
       card.innerHTML = `
         <h3><a href="article.html?id=${article.id}">${escapeHtml(article.title)}</a></h3>
         <p>${escapeHtml(article.summary)}</p>
@@ -75,13 +75,14 @@ async function loadFavorites() {
           </span>
           <span class="rating-stars" style="display:inline-flex;align-items:center;gap:3px;">
             ${ratingStars}
-            <span style="color:var(--muted);font-weight:500;font-size:0.9rem;">(${article.ratingsCount})</span>
+            <span style="color:var(--muted);font-weight:500;font-size:0.9rem;">(${article.ratingsCount || 0})</span>
           </span>
         </p>
       `;
       list.appendChild(card);
     }
   } catch (error) {
+    console.error("Ошибка загрузки избранного:", error);
     list.innerHTML = `<div class="panel"><p>Ошибка загрузки: ${escapeHtml(error.message)}</p></div>`;
   }
 }
