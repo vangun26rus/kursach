@@ -18,6 +18,8 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<ArticleKeyword> ArticleKeywords => Set<ArticleKeyword>();
     public DbSet<Rating> Ratings => Set<Rating>();
     public DbSet<Comment> Comments => Set<Comment>();
+    public DbSet<UserFavorite> UserFavorites => Set<UserFavorite>();
+    public DbSet<ViewedArticle> ViewedArticles => Set<ViewedArticle>();
     public DbSet<FeedbackTicket> FeedbackTickets => Set<FeedbackTicket>();
     public DbSet<TicketMessage> TicketMessages => Set<TicketMessage>();
     public DbSet<ChatRoom> ChatRooms => Set<ChatRoom>();
@@ -94,6 +96,30 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
             e.HasKey(x => x.Id);
             e.HasIndex(x => new { x.ArticleId, x.CreatedAt });
             e.Property(x => x.Text).HasMaxLength(2000);
+        });
+
+        builder.Entity<UserFavorite>(e =>
+        {
+            e.HasKey(x => new { x.UserId, x.ArticleId });
+            e.HasOne(x => x.User)
+                .WithMany(x => x.Favorites)
+                .HasForeignKey(x => x.UserId);
+            e.HasOne(x => x.Article)
+                .WithMany()
+                .HasForeignKey(x => x.ArticleId);
+            e.HasIndex(x => x.AddedAt);
+        });
+
+        builder.Entity<ViewedArticle>(e =>
+        {
+            e.HasKey(x => new { x.UserId, x.ArticleId });
+            e.HasOne(x => x.User)
+                .WithMany(x => x.ViewedArticles)
+                .HasForeignKey(x => x.UserId);
+            e.HasOne(x => x.Article)
+                .WithMany()
+                .HasForeignKey(x => x.ArticleId);
+            e.HasIndex(x => x.ViewedAt);
         });
 
         builder.Entity<FeedbackTicket>(e =>

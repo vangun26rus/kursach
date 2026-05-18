@@ -1,5 +1,7 @@
 let articleId = null;
 let currentUser = null;
+let isArticleFavorite = false;
+let favoriteButton = null;
 
 function renderRatingStars(rating) {
   const fullStars = Math.floor(rating);
@@ -29,11 +31,13 @@ async function initArticlePage() {
   }
 
   currentUser = await getCurrentUser();
+  favoriteButton = document.getElementById("favoriteToggle");
   await loadArticle();
   await loadSimilar();
 
   document.getElementById("commentForm").addEventListener("submit", onAddComment);
   document.getElementById("rateButtons").addEventListener("click", onRateArticle);
+  favoriteButton?.addEventListener("click", onToggleFavorite);
   document.getElementById("articleLoginBtn").addEventListener("click", () => onManualAuth("login"));
   document.getElementById("articleRegisterBtn").addEventListener("click", () => onManualAuth("register"));
   // Обработчики для кнопок в навигации
@@ -70,11 +74,52 @@ async function loadArticle() {
     `;
     document.getElementById("content").innerHTML = article.contentHtml;
     document.getElementById("categories").textContent = article.categories.join(", ");
+    updateFavoriteButton(article.isFavorite);
 
     renderComments(article.comments);
     updateFeedbackState(Boolean(currentUser));
   } catch (error) {
     document.getElementById("title").textContent = "Не удалось загрузить статью";
+    notify("articleStatus", error.message, true);
+  }
+}
+
+function updateFavoriteButton(isFavorite) {
+  isArticleFavorite = Boolean(isFavorite);
+  if (!favoriteButton) {
+    return;
+  }
+
+  favoriteButton.classList.toggle("favorited", isArticleFavorite);
+  favoriteButton.innerHTML = isArticleFavorite
+    ? '<span class="heart-icon">★</span> В избранном'
+    : '<span class="heart-icon">♥</span> Добавить в избранное';
+}
+
+async function onToggleFavorite() {
+  if (!(await ensureFeedbackAuth())) {
+    return;
+  }
+
+  if (!articleId) {
+    return;
+  }
+
+  try {
+    if (isArticleFavorite) {
+      await apiRequest(`/api/users/favorites/${encodeURIComponent(articleId)}`, {
+        method: "DELETE"
+      });
+      updateFavoriteButton(false);
+      notify("articleStatus", "Статья удалена из избранного.");
+    } else {
+      await apiRequest(`/api/users/favorites/${encodeURIComponent(articleId)}`, {
+        method: "POST"
+      });
+      updateFavoriteButton(true);
+      notify("articleStatus", "Статья добавлена в избранное.");
+    }
+  } catch (error) {
     notify("articleStatus", error.message, true);
   }
 }
@@ -145,6 +190,11 @@ async function onManualAuth(mode) {
 function onAuthChanged(event) {
   currentUser = event.detail && event.detail.user ? event.detail.user : null;
   updateFeedbackState(Boolean(currentUser));
+  if (currentUser && articleId) {
+    loadArticle();
+  } else if (!currentUser) {
+    updateFavoriteButton(false);
+  }
 }
 
 async function onRateArticle(event) {

@@ -390,6 +390,45 @@ a:hover {
   margin-bottom: 8px;
 }
 
+.quick-card-slot {
+  display: grid;
+  gap: 14px;
+}
+
+.article-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.favorite-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.favorite-toggle.favorited {
+  background: #c72e48;
+}
+
+.favorite-toggle .heart-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.history-date {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
 /* Remove old guide-list styles that conflict with new ones */
 
 /* Auth buttons row in header */
@@ -644,9 +683,7 @@ label {
 }
 
 .catalog-card {
-  margin-bottom: 20px;
   padding: 5px 5px;
-  border-bottom: 1px dashed #d5e0eb;
 }
 
 .catalog-card:last-child {

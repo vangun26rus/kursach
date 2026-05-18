@@ -21,6 +21,36 @@ function renderSession() {
   updateGreeting(currentUser);
   renderHeaderButtons(currentUser);
   renderAdminPanels(currentUser);
+  renderUserCards(currentUser);
+}
+
+function renderUserCards(user) {
+  const cardsContainer = document.getElementById("userQuickCards");
+  if (!cardsContainer) {
+    return;
+  }
+
+  if (!user) {
+    cardsContainer.innerHTML = "";
+    return;
+  }
+
+  cardsContainer.innerHTML = `
+    <a class="panel quick-card" href="favorites.html">
+      <div class="card-icon">
+        <span style="font-size:32px;line-height:1;">♥</span>
+      </div>
+      <h2>Избранное</h2>
+      <p class="muted">Сохранённые статьи, к которым вы вернётесь позже.</p>
+    </a>
+    <a class="panel quick-card" href="history.html">
+      <div class="card-icon">
+        <span style="font-size:32px;line-height:1;">🕐</span>
+      </div>
+      <h2>История просмотров</h2>
+      <p class="muted">Последние статьи, которые вы уже читали.</p>
+    </a>
+  `;
 }
 
 function onAuthChanged(event) {

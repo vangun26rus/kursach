@@ -26,6 +26,8 @@ public class AppUser : IdentityUser<Guid>
     public ICollection<Article> AuthoredArticles { get; set; } = new List<Article>();
     public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public ICollection<UserFavorite> Favorites { get; set; } = new List<UserFavorite>();
+    public ICollection<ViewedArticle> ViewedArticles { get; set; } = new List<ViewedArticle>();
 }
 
 public class AppRole : IdentityRole<Guid>;
@@ -106,6 +108,24 @@ public class Comment
     public string Text { get; set; } = default!;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public bool IsDeleted { get; set; }
+}
+
+public class UserFavorite
+{
+    public Guid UserId { get; set; }
+    public AppUser User { get; set; } = default!;
+    public Guid ArticleId { get; set; }
+    public Article Article { get; set; } = default!;
+    public DateTime AddedAt { get; set; } = DateTime.UtcNow;
+}
+
+public class ViewedArticle
+{
+    public Guid UserId { get; set; }
+    public AppUser User { get; set; } = default!;
+    public Guid ArticleId { get; set; }
+    public Article Article { get; set; } = default!;
+    public DateTime ViewedAt { get; set; } = DateTime.UtcNow;
 }
 
 public class FeedbackTicket

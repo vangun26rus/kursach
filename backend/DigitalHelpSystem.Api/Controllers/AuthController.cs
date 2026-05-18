@@ -148,12 +148,13 @@ public class AuthController : ControllerBase
 
     private void WriteAuthCookie(string token)
     {
+        var isSecure = Request.IsHttps || string.Equals(Request.Host.Host, "localhost", StringComparison.OrdinalIgnoreCase);
         Response.Cookies.Append("access_token", token, new CookieOptions
         {
             HttpOnly = true,
             IsEssential = true,
-            SameSite = SameSiteMode.Lax,
-            Secure = false,
+            SameSite = SameSiteMode.None,
+            Secure = isSecure,
             Expires = DateTimeOffset.UtcNow.AddHours(12)
         });
     }

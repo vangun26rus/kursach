@@ -121,7 +121,38 @@ await using (var scope = app.Services.CreateAsyncScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await db.Database.EnsureCreatedAsync();
+    await EnsureFavoritesAndHistoryTablesExistAsync(db);
     await SeedData.InitializeAsync(scope.ServiceProvider);
 }
 
 app.Run();
+
+static async Task EnsureFavoritesAndHistoryTablesExistAsync(AppDbContext db)
+{
+    if (!db.Database.IsSqlite())
+    {
+        return;
+    }
+
+    await db.Database.ExecuteSqlRawAsync(@"CREATE TABLE IF NOT EXISTS ""UserFavorites"" (
+        ""UserId"" TEXT NOT NULL,
+        ""ArticleId"" TEXT NOT NULL,
+        ""AddedAt"" TEXT NOT NULL,
+        PRIMARY KEY (""UserId"", ""ArticleId""),
+        FOREIGN KEY (""UserId"") REFERENCES ""Users"" (""Id"") ON DELETE CASCADE,
+        FOREIGN KEY (""ArticleId"") REFERENCES ""Articles"" (""Id"") ON DELETE CASCADE
+    );");
+
+    await db.Database.ExecuteSqlRawAsync(@"CREATE INDEX IF NOT EXISTS ""IX_UserFavorites_AddedAt"" ON ""UserFavorites"" (""AddedAt"");");
+
+    await db.Database.ExecuteSqlRawAsync(@"CREATE TABLE IF NOT EXISTS ""ViewedArticles"" (
+        ""UserId"" TEXT NOT NULL,
+        ""ArticleId"" TEXT NOT NULL,
+        ""ViewedAt"" TEXT NOT NULL,
+        PRIMARY KEY (""UserId"", ""ArticleId""),
+        FOREIGN KEY (""UserId"") REFERENCES ""Users"" (""Id"") ON DELETE CASCADE,
+        FOREIGN KEY (""ArticleId"") REFERENCES ""Articles"" (""Id"") ON DELETE CASCADE
+    );");
+
+    await db.Database.ExecuteSqlRawAsync(@"CREATE INDEX IF NOT EXISTS ""IX_ViewedArticles_ViewedAt"" ON ""ViewedArticles"" (""ViewedAt"");");
+}

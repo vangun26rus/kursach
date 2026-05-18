@@ -82,6 +82,14 @@ public class ArticlesController : ControllerBase
             .Select(p => p.AverageRating)
             .FirstOrDefaultAsync();
 
+        var isFavorite = false;
+        if (User?.Identity?.IsAuthenticated == true)
+        {
+            var userId = User.GetUserId();
+            isFavorite = await _db.UserFavorites.AnyAsync(f => f.UserId == userId && f.ArticleId == article.Id);
+            await RecordArticleViewAsync(article.Id, userId);
+        }
+
         var dto = new ArticleDetailDto(
             article.Id,
             article.Slug,
@@ -100,7 +108,8 @@ public class ArticlesController : ControllerBase
                 .OrderByDescending(c => c.CreatedAt)
                 .Select(c => new CommentDto(c.Id, c.User.DisplayName, c.Text, c.CreatedAt))
                 .ToArray(),
-            article.PublishedAt);
+            article.PublishedAt,
+            isFavorite);
 
         return Ok(dto);
     }
@@ -369,6 +378,48 @@ public class ArticlesController : ControllerBase
         }
 
         return await query.FirstOrDefaultAsync(a => a.Slug == idOrSlug);
+    }
+
+    private async Task RecordArticleViewAsync(Guid articleId, Guid userId)
+    {
+        var existing = await _db.ViewedArticles.FirstOrDefaultAsync(v => v.UserId == userId && v.ArticleId == articleId);
+        if (existing is null)
+        {
+            _db.ViewedArticles.Add(new ViewedArticle
+            {
+                UserId = userId,
+                ArticleId = articleId,
+                ViewedAt = DateTime.UtcNow
+            });
+        }
+        else
+        {
+            existing.ViewedAt = DateTime.UtcNow;
+        }
+
+        await _db.SaveChangesAsync();
+        await PruneOldHistoryEntriesAsync(userId);
+    }
+
+    private async Task PruneOldHistoryEntriesAsync(Guid userId)
+    {
+        var total = await _db.ViewedArticles.CountAsync(v => v.UserId == userId);
+        if (total <= 50)
+        {
+            return;
+        }
+
+        var extra = await _db.ViewedArticles
+            .Where(v => v.UserId == userId)
+            .OrderByDescending(v => v.ViewedAt)
+            .Skip(50)
+            .ToListAsync();
+
+        if (extra.Count > 0)
+        {
+            _db.ViewedArticles.RemoveRange(extra);
+            await _db.SaveChangesAsync();
+        }
     }
 
     private static ArticleStatus NormalizeStatus(string? value)
@@ -859,7 +910,8 @@ public record ArticleDetailDto(
     int RatingsCount,
     decimal AuthorAverageRating,
     IReadOnlyList<CommentDto> Comments,
-    DateTime? PublishedAt);
+    DateTime? PublishedAt,
+    bool IsFavorite);
 
 public record UpsertArticleRequest(
     string? Title,
