@@ -381,6 +381,67 @@ a:hover {
 
 /* Remove old guide-list styles that conflict with new ones */
 
+/* Auth buttons row in header */
+.auth-buttons {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.auth-buttons button {
+  height: 48px;
+  padding: 0 18px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.auth-buttons .btn-help-header {
+  background: linear-gradient(135deg, #ffb166 0%, #ff9f43 100%);
+  border-color: #ff9f43;
+}
+
+.auth-buttons .btn-help-header:hover {
+  background: linear-gradient(135deg, #ffc48a 0%, #ffb166 100%);
+}
+
+.auth-buttons .btn-logout {
+  background: var(--danger);
+  border-color: var(--danger);
+}
+
+.auth-buttons .btn-logout:hover {
+  background: var(--danger-dark);
+  border-color: var(--danger-dark);
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #28a745;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.05rem;
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.35);
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+.toast.hide {
+  opacity: 0;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

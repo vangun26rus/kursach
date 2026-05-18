@@ -14,38 +14,12 @@ async function initIndexPage() {
   });
   document.getElementById("openLoginBtn").addEventListener("click", () => openAuthModal("login"));
   document.getElementById("openRegisterBtn").addEventListener("click", () => openAuthModal("register"));
-  document.getElementById("logoutBtn").addEventListener("click", onLogout);
   window.addEventListener("auth:changed", onAuthChanged);
 }
 
 function renderSession() {
-  const guestActions = document.getElementById("guestActions");
-  const userBlock = document.getElementById("userBlock");
-  const roleLinks = document.getElementById("roleLinks");
-  const greeting = document.getElementById("greeting");
-
-  if (!currentUser) {
-    guestActions.hidden = false;
-    userBlock.hidden = true;
-    greeting.textContent = "Найдите нужную инструкцию за пару шагов.";
-    roleLinks.innerHTML = "";
-    return;
-  }
-
-  guestActions.hidden = true;
-  userBlock.hidden = false;
-  document.getElementById("userName").textContent = currentUser.displayName;
-  document.getElementById("userRole").textContent = currentUser.roles.join(", ");
-  greeting.textContent = `Здравствуйте, ${currentUser.displayName}. Что ищем сегодня?`;
-
-  const links = ['<a href="catalog.html">Каталог</a>', '<a href="support.html">Нужна помощь?</a>'];
-  if (hasRole(currentUser, "Author") || hasRole(currentUser, "Admin")) {
-    links.push('<a href="author.html">Панель автора</a>');
-  }
-  if (hasRole(currentUser, "Admin")) {
-    links.push('<a href="admin.html">Панель админа</a>');
-  }
-  roleLinks.innerHTML = links.join("");
+  updateGreeting(currentUser);
+  renderHeaderButtons(currentUser);
 }
 
 async function onLogout() {
@@ -58,7 +32,6 @@ async function onLogout() {
   currentUser = null;
   emitAuthChanged(null);
   renderSession();
-  notify("indexStatus", "Вы вышли из системы.");
 }
 
 function onAuthChanged(event) {
@@ -68,7 +41,7 @@ function onAuthChanged(event) {
   }
   renderSession();
   if (currentUser) {
-    notify("indexStatus", `Вход выполнен. Добро пожаловать, ${currentUser.displayName}.`);
+    showToast(`Вход выполнен. Добро пожаловать, ${currentUser.displayName}.`);
   }
 }
 
