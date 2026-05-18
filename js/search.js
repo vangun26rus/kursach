@@ -20,6 +20,7 @@ async function initIndexPage() {
 function renderSession() {
   updateGreeting(currentUser);
   renderHeaderButtons(currentUser);
+  renderAdminPanels(currentUser);
 }
 
 function onAuthChanged(event) {

@@ -1194,3 +1194,44 @@ li {
     width: 100%;
   }
 }
+
+/* Admin panels row below header */
+.admin-panels {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+.admin-panel-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-panel-link {
+  height: 44px;
+  padding: 0 20px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  background: #e6f0ff;
+  color: #153353;
+  border: 2px solid #80a6da;
+  transition: all 0.2s ease;
+}
+
+.admin-panel-link:hover {
+  background: #2b5d9b;
+  color: #fff;
+  border-color: #2b5d9b;
+  transform: translateY(-2px);
+}
+

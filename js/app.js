@@ -321,11 +321,6 @@ function renderHeaderButtons(user) {
   guestActions.hidden = true;
   authButtons.hidden = false;
   
-  const roleLinksMap = {
-    "Admin": { text: "Панель админа", href: "admin.html" },
-    "Author": { text: "Панель автора", href: "author.html" }
-  };
-  
   let buttonsHtml = '';
   
   buttonsHtml += `<a href="support.html" class="help-btn btn-help-header" style="text-decoration:none;height:48px;padding:12px 18px;display:inline-flex;align-items:center;gap:8px;border-radius:12px;font-weight:700;color:white;">
@@ -340,20 +335,45 @@ function renderHeaderButtons(user) {
     <span>Нужна помощь?</span>
   </a>`;
   
-  if (Array.isArray(user.roles)) {
-    user.roles.forEach(role => {
-      const linkInfo = roleLinksMap[role];
-      if (linkInfo) {
-        buttonsHtml += `<a href="${linkInfo.href}" class="secondary" style="text-decoration:none;height:48px;padding:0 18px;display:inline-flex;align-items:center;border-radius:12px;font-weight:700;">${linkInfo.text}</a>`;
-      }
-    });
-  }
-  
   buttonsHtml += `<button id="logoutBtn" type="button" class="btn-logout">Выйти</button>`;
   
   authButtons.innerHTML = buttonsHtml;
   
   document.getElementById("logoutBtn").addEventListener("click", onLogout);
+}
+
+function renderAdminPanels(user) {
+  const adminPanels = document.getElementById("adminPanels");
+  
+  if (!user || !Array.isArray(user.roles)) {
+    adminPanels.hidden = true;
+    adminPanels.innerHTML = '';
+    return;
+  }
+  
+  const isAuthor = user.roles.includes("Author");
+  const isAdmin = user.roles.includes("Admin");
+  
+  if (!isAuthor && !isAdmin) {
+    adminPanels.hidden = true;
+    adminPanels.innerHTML = '';
+    return;
+  }
+  
+  adminPanels.hidden = false;
+  
+  let panelsHtml = '<div class="admin-panel-links">';
+  
+  if (isAuthor) {
+    panelsHtml += `<a href="author.html" class="admin-panel-link">Панель автора</a>`;
+  }
+  
+  if (isAdmin) {
+    panelsHtml += `<a href="admin.html" class="admin-panel-link">Панель админа</a>`;
+  }
+  
+  panelsHtml += '</div>';
+  adminPanels.innerHTML = panelsHtml;
 }
 
 function updateGreeting(user) {
