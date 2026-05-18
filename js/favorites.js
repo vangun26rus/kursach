@@ -30,11 +30,14 @@ async function initFavoritesPage() {
   await loadFavorites();
 }
 
-function onWindowFocus() {
+async function onWindowFocus() {
+  const latestUser = await getCurrentUser();
+  currentUser = latestUser;
   if (!currentUser) {
+    renderLoginPrompt();
     return;
   }
-  loadFavorites();
+  await loadFavorites();
 }
 
 function renderLoginPrompt() {

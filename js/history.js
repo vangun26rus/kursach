@@ -30,11 +30,14 @@ async function initHistoryPage() {
   await loadHistory();
 }
 
-function onWindowFocus() {
+async function onWindowFocus() {
+  const latestUser = await getCurrentUser();
+  currentUser = latestUser;
   if (!currentUser) {
+    renderLoginPrompt();
     return;
   }
-  loadHistory();
+  await loadHistory();
 }
 
 function renderLoginPrompt() {

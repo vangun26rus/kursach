@@ -56,7 +56,9 @@ async function apiRequest(path, options = {}) {
       (data && data.message) ||
       (Array.isArray(data) && data.join(", ")) ||
       "Request failed";
-    throw new Error(message);
+    const error = new Error(message);
+    error.status = response.status;
+    throw error;
   }
 
   return data;
@@ -74,7 +76,10 @@ function escapeHtml(value) {
 async function getCurrentUser() {
   try {
     return await apiRequest(`/api/auth/me?ts=${Date.now()}`);
-  } catch {
+  } catch (error) {
+    if (error && error.status === 401) {
+      setAuthToken("");
+    }
     return null;
   }
 }
@@ -270,6 +275,7 @@ async function onModalLogin(event) {
     setAuthToken(user && typeof user.token === "string" ? user.token : "");
     emitAuthChanged(user);
     closeAuthModal(user);
+    window.location.reload();
   } catch (error) {
     notify("authModalStatus", error.message, true);
   }
@@ -290,6 +296,7 @@ async function onModalRegister(event) {
     setAuthToken(user && typeof user.token === "string" ? user.token : "");
     emitAuthChanged(user);
     closeAuthModal(user);
+    window.location.reload();
   } catch (error) {
     notify("authModalStatus", error.message, true);
   }
@@ -419,4 +426,5 @@ async function onLogout() {
   setAuthToken("");
   emitAuthChanged(null);
   showToast("Вы успешно вышли из системы");
+  window.location.reload();
 }
