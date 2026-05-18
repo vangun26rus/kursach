@@ -106,7 +106,7 @@ public class AuthController : ControllerBase
     [Authorize]
     public IActionResult Logout()
     {
-        Response.Cookies.Delete("access_token");
+        Response.Cookies.Delete("access_token", new CookieOptions { Path = "/" });
         return NoContent();
     }
 
@@ -155,7 +155,8 @@ public class AuthController : ControllerBase
             IsEssential = true,
             SameSite = SameSiteMode.None,
             Secure = isSecure,
-            Expires = DateTimeOffset.UtcNow.AddHours(12)
+            Expires = DateTimeOffset.UtcNow.AddHours(12),
+            Path = "/"
         });
     }
 }

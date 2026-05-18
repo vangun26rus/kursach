@@ -3,6 +3,7 @@ const API_BASE_URL =
   (window.location.protocol === "file:" ? "http://localhost:5000" : window.location.port === "5000" ? "" : "http://localhost:5000");
 const AUTH_MODAL_ID = "authModal";
 const AUTH_TOKEN_KEY = "authToken";
+const AUTH_USER_KEY = "authUser";
 
 let authModalPromise = null;
 let authModalResolve = null;
@@ -31,7 +32,7 @@ async function apiRequest(path, options = {}) {
 
   const settings = {
     method: options.method || "GET",
-    credentials: "include",
+    credentials: options.credentials || "include",
     mode: "cors",
     cache: "no-store",
     headers
@@ -42,6 +43,11 @@ async function apiRequest(path, options = {}) {
   }
 
   const response = await fetch(finalUrl, settings);
+  if (response.status === 401) {
+    setAuthToken("");
+    setAuthUser(null);
+    emitAuthChanged(null);
+  }
   if (response.status === 204) {
     return null;
   }
@@ -74,13 +80,21 @@ function escapeHtml(value) {
 }
 
 async function getCurrentUser() {
+  const cachedUser = getAuthUser();
+
   try {
-    return await apiRequest(`/api/auth/me?ts=${Date.now()}`);
+    const user = await apiRequest(`/api/auth/me?ts=${Date.now()}`);
+    if (user) {
+      setAuthUser(user);
+    }
+    return user || cachedUser;
   } catch (error) {
     if (error && error.status === 401) {
       setAuthToken("");
+      setAuthUser(null);
+      return null;
     }
-    return null;
+    return cachedUser;
   }
 }
 
@@ -115,6 +129,7 @@ function setAuthToken(token) {
   try {
     if (!token) {
       localStorage.removeItem(AUTH_TOKEN_KEY);
+      localStorage.removeItem(AUTH_USER_KEY);
       return;
     }
     localStorage.setItem(AUTH_TOKEN_KEY, token);
@@ -122,6 +137,54 @@ function setAuthToken(token) {
     // ignore storage errors
   }
 }
+
+function getAuthUser() {
+  try {
+    const raw = localStorage.getItem(AUTH_USER_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function setAuthUser(user) {
+  try {
+    if (!user) {
+      localStorage.removeItem(AUTH_USER_KEY);
+      return;
+    }
+    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+  } catch {
+    // ignore storage errors
+  }
+}
+
+function handleExternalAuthChange() {
+  const cachedUser = getAuthUser();
+  if (cachedUser) {
+    emitAuthChanged(cachedUser);
+  }
+
+  getCurrentUser().then((user) => {
+    if (!user) {
+      emitAuthChanged(null);
+    } else {
+      emitAuthChanged(user);
+    }
+  });
+}
+
+window.addEventListener("storage", (event) => {
+  if (event.key === AUTH_TOKEN_KEY) {
+    handleExternalAuthChange();
+  }
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    handleExternalAuthChange();
+  }
+});
 
 function ensureAuthModal() {
   if (document.getElementById(AUTH_MODAL_ID)) {
@@ -270,9 +333,11 @@ async function onModalLogin(event) {
   try {
     const user = await apiRequest("/api/auth/login", {
       method: "POST",
+      credentials: "include",
       body: { email, password }
     });
     setAuthToken(user && typeof user.token === "string" ? user.token : "");
+    setAuthUser(user);
     emitAuthChanged(user);
     closeAuthModal(user);
     window.location.reload();
@@ -291,9 +356,11 @@ async function onModalRegister(event) {
   try {
     const user = await apiRequest("/api/auth/register", {
       method: "POST",
+      credentials: "include",
       body: { displayName, email, password, role }
     });
     setAuthToken(user && typeof user.token === "string" ? user.token : "");
+    setAuthUser(user);
     emitAuthChanged(user);
     closeAuthModal(user);
     window.location.reload();
@@ -419,11 +486,12 @@ function updateGreeting(user) {
 
 async function onLogout() {
   try {
-    await apiRequest("/api/auth/logout", { method: "POST" });
+    await apiRequest("/api/auth/logout", { method: "POST", credentials: "include" });
   } catch {
     // ignore logout errors
   }
   setAuthToken("");
+  setAuthUser(null);
   emitAuthChanged(null);
   showToast("Вы успешно вышли из системы");
   window.location.reload();
