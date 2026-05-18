@@ -110,6 +110,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<JwtFromCookieMiddleware>();
+app.UseMiddleware<NoCacheMiddleware>();
 app.UseCors("frontend");
 app.UseAuthentication();
 app.UseAuthorization();
