@@ -286,3 +286,90 @@ async function requireAuth(preferredTab = "login") {
 
   return openAuthModal(preferredTab);
 }
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  if (!toast) return;
+  
+  toast.textContent = message;
+  toast.hidden = false;
+  
+  requestAnimationFrame(() => {
+    toast.classList.add("show");
+    toast.classList.remove("hide");
+  });
+  
+  setTimeout(() => {
+    toast.classList.remove("show");
+    toast.classList.add("hide");
+    setTimeout(() => {
+      toast.hidden = true;
+    }, 300);
+  }, 3000);
+}
+
+function renderHeaderButtons(user) {
+  const guestActions = document.getElementById("guestActions");
+  const authButtons = document.getElementById("authButtons");
+  
+  if (!user) {
+    guestActions.hidden = false;
+    authButtons.hidden = true;
+    return;
+  }
+  
+  guestActions.hidden = true;
+  authButtons.hidden = false;
+  
+  const roleLinksMap = {
+    "Admin": { text: "Панель админа", href: "admin.html" },
+    "Author": { text: "Панель автора", href: "author.html" }
+  };
+  
+  let buttonsHtml = '';
+  
+  buttonsHtml += `<a href="support.html" class="help-btn btn-help-header" style="text-decoration:none;">Нужна помощь?</a>`;
+  
+  if (Array.isArray(user.roles)) {
+    user.roles.forEach(role => {
+      const linkInfo = roleLinksMap[role];
+      if (linkInfo) {
+        buttonsHtml += `<a href="${linkInfo.href}" class="secondary" style="text-decoration:none;height:48px;padding:0 18px;display:inline-flex;align-items:center;border-radius:12px;font-weight:700;">${linkInfo.text}</a>`;
+      }
+    });
+  }
+  
+  buttonsHtml += `<button id="logoutBtn" type="button" class="btn-logout">Выйти</button>`;
+  
+  authButtons.innerHTML = buttonsHtml;
+  
+  document.getElementById("logoutBtn").addEventListener("click", onLogout);
+}
+
+function updateGreeting(user) {
+  const greetingEl = document.getElementById("greeting");
+  if (!greetingEl) return;
+  
+  if (!user) {
+    greetingEl.textContent = "Найдите нужную инструкцию за пару шагов.";
+    return;
+  }
+  
+  const userName = escapeHtml(user.displayName || user.name || "Пользователь");
+  const userRole = Array.isArray(user.roles) && user.roles.length > 0 
+    ? user.roles.join(", ") 
+    : "Reader";
+  
+  greetingEl.textContent = `Здравствуйте, ${userName} [${userRole}]. Что ищем сегодня?`;
+}
+
+async function onLogout() {
+  try {
+    await apiRequest("/api/auth/logout", { method: "POST" });
+  } catch {
+    // ignore logout errors
+  }
+  setAuthToken("");
+  emitAuthChanged(null);
+  showToast("Вы успешно вышли из системы");
+}

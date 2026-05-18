@@ -32,12 +32,7 @@
           <button id="openRegisterBtn" type="button">Регистрация</button>
         </div>
 
-        <section id="userBlock" class="panel user-panel" hidden>
-          <p><strong id="userName"></strong></p>
-          <p class="muted">Роли: <span id="userRole"></span></p>
-          <div id="roleLinks" class="links"></div>
-          <button id="logoutBtn" class="danger" type="button">Выйти</button>
-        </section>
+        <div id="authButtons" class="auth-buttons" hidden></div>
       </div>
     </header>
 
@@ -104,7 +99,7 @@
       </a>
     </section>
 
-    <p id="indexStatus" class="status"></p>
+    <div id="toast" class="toast" hidden></div>
   </main>
 
   <script src="js/app.js"></script>
