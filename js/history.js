@@ -76,7 +76,29 @@ async function loadHistory() {
       const card = document.createElement("article");
       card.className = "card catalog-card";
       const ratingStars = renderRatingStars(item.averageRating);
-      const viewedDate = new Date(item.viewedAt).toLocaleString("ru-RU", {
+      // Robust parsing: if backend returned a datetime string without timezone
+      // (e.g. "2026-05-18T20:45:00") treat it as UTC and convert to local time.
+      let viewedDateObj;
+      try {
+        if (typeof item.viewedAt === 'number') {
+          // assume milliseconds
+          viewedDateObj = new Date(item.viewedAt);
+        } else if (typeof item.viewedAt === 'string') {
+          // if string already contains timezone info or 'Z', parse directly
+          if (/[zZ]$/.test(item.viewedAt) || /[+\-]\d{2}:?\d{2}$/.test(item.viewedAt)) {
+            viewedDateObj = new Date(item.viewedAt);
+          } else {
+            // append 'Z' to treat it as UTC
+            viewedDateObj = new Date(item.viewedAt + 'Z');
+          }
+        } else {
+          viewedDateObj = new Date(item.viewedAt);
+        }
+      } catch (e) {
+        viewedDateObj = new Date(item.viewedAt);
+      }
+
+      const viewedDate = viewedDateObj.toLocaleString("ru-RU", {
         year: "numeric",
         month: "long",
         day: "numeric",

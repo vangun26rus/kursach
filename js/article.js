@@ -36,6 +36,7 @@ async function initArticlePage() {
   await loadSimilar();
 
   document.getElementById("commentForm").addEventListener("submit", onAddComment);
+  document.getElementById("commentsList").addEventListener("click", onDeleteComment);
   document.getElementById("rateButtons").addEventListener("click", onRateArticle);
   favoriteButton?.addEventListener("click", onToggleFavorite);
   document.getElementById("articleLoginBtn").addEventListener("click", () => onManualAuth("login"));
@@ -136,10 +137,13 @@ function renderComments(comments) {
     const li = document.createElement("li");
     li.innerHTML = `
       <div class="comment-author">
-        <span class="user-icon">
-          <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-        </span>
-        <strong>${escapeHtml(comment.authorName)}</strong>
+        <div class="comment-author-info">
+          <span class="user-icon">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          </span>
+          <strong>${escapeHtml(comment.authorName)}</strong>
+        </div>
+        ${comment.canDelete ? `<button type="button" class="comment-delete-btn" data-comment-id="${comment.id}" aria-label="Удалить комментарий">×</button>` : ""}
       </div>
       <p>${escapeHtml(comment.text)}</p>
     `;
@@ -160,6 +164,41 @@ function updateFeedbackState(isAuthenticated) {
     actions.hidden = false;
     if (navLoginBtn) navLoginBtn.hidden = false;
     if (navRegisterBtn) navRegisterBtn.hidden = false;
+  }
+}
+
+async function onDeleteComment(event) {
+  const button = event.target.closest(".comment-delete-btn");
+  if (!button) {
+    return;
+  }
+
+  const commentId = button.dataset.commentId;
+  if (!commentId || !articleId) {
+    return;
+  }
+
+  if (!currentUser) {
+    if (!(await ensureFeedbackAuth())) {
+      return;
+    }
+  }
+
+  if (!confirm("Удалить ваш комментарий?")) {
+    return;
+  }
+
+  button.disabled = true;
+  try {
+    await apiRequest(`/api/articles/${encodeURIComponent(articleId)}/comments/${encodeURIComponent(commentId)}`, {
+      method: "DELETE"
+    });
+    await loadArticle();
+    notify("articleStatus", "Комментарий удалён.");
+  } catch (error) {
+    notify("articleStatus", error.message, true);
+  } finally {
+    button.disabled = false;
   }
 }
 

@@ -504,19 +504,19 @@ public static class SeedData
                 "DEMO: Нужна быстрая помощь по статье",
                 "Статья не помогла, нужен специалист в чате.",
                 "reader@digital-help.local",
-                TicketStatus.InProgress,
+                TicketStatus.Open,
                 true),
             new SeedTicket(
                 "DEMO: Нужна консультация по настройке телефона",
                 "Не получается повторить шаги из инструкции, нужен чат.",
                 "reader2@digital-help.local",
-                TicketStatus.Open,
+                TicketStatus.Closed,
                 true),
             new SeedTicket(
                 "DEMO: Техническая ошибка при отправке комментария",
                 "После нажатия кнопки отправки появляется сообщение о сбое.",
                 "reader3@digital-help.local",
-                TicketStatus.Resolved,
+                TicketStatus.Open,
                 false),
             new SeedTicket(
                 "DEMO: Техническая ошибка в рейтинге автора",
@@ -608,7 +608,7 @@ public static class SeedData
                     Id = Guid.NewGuid(),
                     TicketId = ticket.Id,
                     CreatedAt = DateTime.UtcNow.AddDays(-6),
-                    IsClosed = ticket.Status is TicketStatus.Resolved or TicketStatus.Closed
+                    IsClosed = ticket.Status == TicketStatus.Closed
                 };
                 db.ChatRooms.Add(room);
 
@@ -625,7 +625,7 @@ public static class SeedData
                     Id = Guid.NewGuid(),
                     RoomId = room.Id,
                     SenderUserId = staffId,
-                    Message = "Здравствуйте, давайте разберёмся вместе. Опишите, на каком шаге остановились.",
+                    Message = item.Status == TicketStatus.Closed ? "Проблема решена, спасибо за обращение." : "Ждите, разбираемся в проблеме.",
                     SentAt = DateTime.UtcNow.AddDays(-6).AddMinutes(15)
                 });
             }

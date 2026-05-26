@@ -246,8 +246,7 @@ public class SupportController : ControllerBase
 
         var query = _db.ChatRooms
             .AsNoTracking()
-            .Include(r => r.Ticket)
-            .Where(r => !r.IsClosed);
+            .Include(r => r.Ticket);
 
         if (!isStaff)
         {
@@ -295,6 +294,17 @@ public class SupportController : ControllerBase
             return Forbid();
         }
 
+        var room = await _db.ChatRooms.AsNoTracking().FirstOrDefaultAsync(r => r.Id == roomId);
+        if (room is null)
+        {
+            return NotFound();
+        }
+
+        if (room.IsClosed)
+        {
+            return BadRequest(new { message = "Этот чат уже закрыт." });
+        }
+
         var userId = User.GetUserId();
         var now = DateTime.UtcNow;
         var message = new ChatMessage
@@ -328,10 +338,10 @@ public class SupportController : ControllerBase
         var userId = User.GetUserId();
         if (User.IsInRole("Admin") || User.IsInRole("Author"))
         {
-            return await _db.ChatRooms.AnyAsync(r => r.Id == roomId && !r.IsClosed);
+            return await _db.ChatRooms.AnyAsync(r => r.Id == roomId);
         }
 
-        return await _db.ChatRooms.AnyAsync(r => r.Id == roomId && !r.IsClosed && r.Ticket.CreatedByUserId == userId);
+        return await _db.ChatRooms.AnyAsync(r => r.Id == roomId && r.Ticket.CreatedByUserId == userId);
     }
 
     private static string? NormalizeTicketKind(string? kind)

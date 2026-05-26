@@ -34,37 +34,53 @@
     <section class="panel">
       <h2>Сообщить об ошибке</h2>
       <form id="ticketForm" class="stack">
-        <label for="ticketKind">Тип обращения</label>
-        <select id="ticketKind">
-          <option value="QuickHelp">Быстрая помощь (чат с экспертами)</option>
-          <option value="TechnicalIssue">Техническая ошибка (только администратор)</option>
+        <label>Тип обращения</label>
+        <div id="ticketKindSelector" class="kind-selector" role="radiogroup" aria-label="Тип обращения">
+          <button type="button" class="kind-option selected" data-kind="QuickHelp" aria-pressed="true">Быстрая помощь</button>
+          <button type="button" class="kind-option" data-kind="TechnicalIssue" aria-pressed="false">Техническая ошибка</button>
+        </div>
+        <select id="ticketKind" hidden>
+          <option value="QuickHelp">Быстрая помощь</option>
+          <option value="TechnicalIssue">Техническая ошибка</option>
         </select>
         <input id="ticketSubject" type="text" placeholder="Тема обращения" required>
-        <textarea id="ticketDescription" rows="4" placeholder="Опишите проблему" required></textarea>
-        <button type="submit">Отправить обращение</button>
+        <div class="reply-panel ticket-compose">
+          <textarea id="ticketDescription" class="reply-textarea" rows="1" placeholder="Опишите проблему" required></textarea>
+          <button type="submit" class="send-round-btn" aria-label="Отправить обращение">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 5l8 7-8 7V5z" />
+            </svg>
+          </button>
+        </div>
       </form>
     </section>
 
     <div class="grid">
       <section class="panel">
-        <h2>Обращения о технических ошибках</h2>
-        <ul id="ticketsList"></ul>
-        <form id="ticketReplyForm" class="stack">
-          <textarea id="ticketReplyText" rows="3" placeholder="Ответ администратора на обращение"></textarea>
-          <button type="submit">Отправить ответ</button>
-        </form>
-        <ul id="ticketMessages"></ul>
+        <div class="section-title">
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2L3 14h7v8l10-12h-7V2z" />
+            </svg>
+          </span>
+          <h2>Быстрый чат</h2>
+        </div>
+        <ul id="roomsList" class="support-list"></ul>
+      </section>
+      
+      <section class="panel">
+        <div class="section-title">
+          <span class="section-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+          </span>
+          <h2>Технические ошибки</h2>
+        </div>
+        <ul id="ticketsList" class="support-list"></ul>
       </section>
 
-      <section class="panel">
-        <h2>Чат быстрой помощи по статьям</h2>
-        <ul id="roomsList"></ul>
-        <form id="chatForm" class="stack">
-          <textarea id="chatText" rows="3" placeholder="Сообщение в чат быстрой помощи"></textarea>
-          <button type="submit">Отправить в чат</button>
-        </form>
-        <ul id="chatMessages"></ul>
-      </section>
+      
     </div>
 
     <p id="supportStatus" class="status"></p>

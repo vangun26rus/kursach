@@ -195,7 +195,7 @@ function ensureAuthModal() {
   wrapper.innerHTML = `
     <div id="${AUTH_MODAL_ID}" class="modal-overlay" hidden aria-hidden="true">
       <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="authModalTitle">
-        <button id="authModalClose" type="button" class="modal-close" aria-label="Закрыть окно входа">x</button>
+        <button id="authModalClose" type="button" class="modal-close" aria-label="Закрыть окно входа">×</button>
         <h2 id="authModalTitle">Вход в систему</h2>
         <p id="authModalLead" class="muted">Войдите, чтобы продолжить.</p>
         <div class="modal-tabs" role="tablist" aria-label="Выберите действие">
@@ -481,7 +481,8 @@ function updateGreeting(user) {
     ? user.roles.join(", ") 
     : "Reader";
   
-  greetingEl.textContent = `Здравствуйте, ${userName} [${userRole}]. Что ищем сегодня?`;
+  // highlight user name
+  greetingEl.innerHTML = `Здравствуйте, <strong>${userName}</strong> [${userRole}]. Что ищем сегодня?`;
 }
 
 async function onLogout() {

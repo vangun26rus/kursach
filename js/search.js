@@ -37,17 +37,27 @@ function renderUserCards(user) {
 
   cardsContainer.innerHTML = `
     <a class="panel quick-card" href="favorites.html">
-      <div class="card-icon">
-        <span style="font-size:32px;line-height:1;">♥</span>
+      <div class="card-header">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 21s-7-5.5-7-10.5A4.5 4.5 0 0 1 9.5 6 4.5 4.5 0 0 1 12 8.2 4.5 4.5 0 0 1 14.5 6 4.5 4.5 0 0 1 21 10.5C21 15.5 12 21 12 21z"></path>
+          </svg>
+        </div>
+        <h2>Избранное</h2>
       </div>
-      <h2>Избранное</h2>
       <p class="muted">Сохранённые статьи, к которым вы вернётесь позже.</p>
     </a>
     <a class="panel quick-card" href="history.html">
-      <div class="card-icon">
-        <span style="font-size:32px;line-height:1;">🕐</span>
+      <div class="card-header">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="8"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="12" x2="15" y2="15"></line>
+          </svg>
+        </div>
+        <h2>История просмотров</h2>
       </div>
-      <h2>История просмотров</h2>
       <p class="muted">Последние статьи, которые вы уже читали.</p>
     </a>
   `;
@@ -87,13 +97,35 @@ async function searchArticles() {
       li.innerHTML = `
         <a class="result-title" href="article.html?id=${article.id}">${escapeHtml(article.title)}</a>
         <p class="muted">${escapeHtml(article.summary)}</p>
-        <p class="muted">Автор: ${escapeHtml(article.authorName)} | Рейтинг: ${article.averageRating.toFixed(2)} (${article.ratingsCount})</p>
+        <p class="muted" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;">
+          <span>Автор: ${escapeHtml(article.authorName)}</span>
+          <span class="rating-stars">${renderRatingStars(article.averageRating || 0)}</span>
+          <span style="color:var(--muted);font-weight:500;font-size:0.92rem;">(${article.ratingsCount || 0})</span>
+        </p>
       `;
       resultsList.appendChild(li);
     }
   } catch (error) {
     resultsList.innerHTML = `<li>Ошибка: ${escapeHtml(error.message)}</li>`;
   }
+}
+
+function renderRatingStars(rating) {
+  const fullStars = Math.floor(rating);
+  const hasHalfStar = rating % 1 >= 0.5;
+  let stars = '';
+
+  for (let i = 0; i < 5; i++) {
+    if (i < fullStars) {
+      stars += '<svg class="star-icon" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+    } else if (i === fullStars && hasHalfStar) {
+      stars += '<svg class="star-icon" viewBox="0 0 24 24" style="opacity:0.5;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+    } else {
+      stars += '<svg class="star-icon" viewBox="0 0 24 24" style="opacity:0.2;"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+    }
+  }
+
+  return stars;
 }
 
 function buildSearchQueries(query) {

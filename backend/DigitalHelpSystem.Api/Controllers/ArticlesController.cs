@@ -82,6 +82,7 @@ public class ArticlesController : ControllerBase
             .Select(p => p.AverageRating)
             .FirstOrDefaultAsync();
 
+        var currentUserId = User?.Identity?.IsAuthenticated == true ? User.GetUserId() : Guid.Empty;
         var isFavorite = false;
         if (User?.Identity?.IsAuthenticated == true)
         {
@@ -106,7 +107,7 @@ public class ArticlesController : ControllerBase
             article.Comments
                 .Where(c => !c.IsDeleted)
                 .OrderByDescending(c => c.CreatedAt)
-                .Select(c => new CommentDto(c.Id, c.User.DisplayName, c.Text, c.CreatedAt))
+                .Select(c => new CommentDto(c.Id, c.User.DisplayName, c.Text, c.CreatedAt, c.UserId == currentUserId))
                 .ToArray(),
             article.PublishedAt,
             isFavorite);
@@ -359,7 +360,29 @@ public class ArticlesController : ControllerBase
         await _db.SaveChangesAsync();
 
         var userName = await _db.Users.Where(u => u.Id == userId).Select(u => u.DisplayName).FirstAsync();
-        return Ok(new CommentDto(comment.Id, userName, comment.Text, comment.CreatedAt));
+        return Ok(new CommentDto(comment.Id, userName, comment.Text, comment.CreatedAt, true));
+    }
+
+    [HttpDelete("{id:guid}/comments/{commentId:guid}")]
+    [Authorize(Roles = "Reader,Author,Admin")]
+    public async Task<ActionResult> DeleteComment(Guid id, Guid commentId)
+    {
+        var comment = await _db.Comments.FirstOrDefaultAsync(c => c.Id == commentId && c.ArticleId == id && !c.IsDeleted);
+        if (comment is null)
+        {
+            return NotFound();
+        }
+
+        var userId = User.GetUserId();
+        if (comment.UserId != userId)
+        {
+            return Forbid();
+        }
+
+        comment.IsDeleted = true;
+        await _db.SaveChangesAsync();
+
+        return NoContent();
     }
 
     private async Task<Article?> FindArticleByIdOrSlugAsync(string idOrSlug)
@@ -894,7 +917,7 @@ public record ArticleSummaryDto(
     int RatingsCount,
     DateTime? PublishedAt);
 
-public record CommentDto(Guid Id, string AuthorName, string Text, DateTime CreatedAt);
+public record CommentDto(Guid Id, string AuthorName, string Text, DateTime CreatedAt, bool CanDelete);
 
 public record ArticleDetailDto(
     Guid Id,
